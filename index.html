@@ -210,6 +210,7 @@
   .dot .d-nt{font-size:8px;font-weight:600;opacity:.78;margin-top:1px;pointer-events:none;}
   .dot:active{transform:scale(.9);}
   .dot.dim{opacity:.16;} .dot.ghost{opacity:.45;}
+  .key.fill{opacity:.7;}   /* nota de relleno en modo Esqueleto (pentatónica) */
   /* CAGED: franjas que agrupan cada forma sobre el mástil */
   .fb-zones{position:absolute;left:8px;right:8px;top:10px;height:276px;display:grid;grid-auto-rows:100%;pointer-events:none;z-index:1;}
   .fb-zone{grid-row:1;border:2px solid;border-radius:8px;}
@@ -1085,8 +1086,9 @@ function makeKey(absPc,octave,black,activeSet,voicing,bassMidi){
   if(lit){ el.classList.add("on"); el.style.background=colorFor(pcRel);
     const isBass = voicing ? (keyMidi===bassMidi) : (pcRel===WB_BASS);
     if(isBass) el.classList.add("bass");
-  } else if(state.showInactive){ el.style.boxShadow="inset 0 0 0 2px "+colorFor(pcRel)+"55"; }
-  const lbl = voicing ? lit : true;                      // en modo voicing, etiqueto sólo las notas del acorde
+  } else if(!voicing && WB_GHOST){ if(WB_GHOST.has(pcRel)){ el.classList.add("fill"); el.style.boxShadow="inset 0 0 0 3px "+colorFor(pcRel); } }   // relleno (esqueleto)
+  else if(state.showInactive){ el.style.boxShadow="inset 0 0 0 2px "+colorFor(pcRel)+"55"; }
+  const lbl = voicing ? lit : (WB_GHOST ? (lit||WB_GHOST.has(pcRel)) : true);   // esqueleto: etiqueto sólo penta + relleno
   el.innerHTML=`<span class="ivl">${lbl?IVL[pcRel]:""}</span><span class="nm">${lbl?noteLabel(absPc):""}<i class="oc">${lbl?octave:""}</i></span>`;
   el.onclick=()=>{ playMidi(keyMidi, 0, 0.9); };   // sólo suena (la identificación por clic se quitó, se repensará)
   return el;
@@ -1097,10 +1099,11 @@ function cellState(strNum,fret,gmap){
   const midi=BASE[strNum]+fret, pc=midi%12, pcRel=(pc-state.root+12)%12;
   const on=isOn(pcRel), inGrip=gmap?gmap[strNum+":"+fret]:null;
   let show=false,dim=false;
-  if(gmap){ if(inGrip) show=true; else if(on){ show=true; dim=true; } }
+  if(gmap){ if(inGrip){ show=true; if(inGrip.fill) dim=true; } else if(on){ show=true; dim=true; } }
+  else if(WB_GHOST){ show = on || WB_GHOST.has(pcRel); dim=!on; }   // esqueleto: pentatónica + 2 de relleno (fantasma)
   else { show=on||state.showInactive; dim=!on; }
   if(!show) return null;
-  return {midi,pc,pcRel,on,inGrip,dim,ghost:(!gmap&&dim)};
+  return {midi,pc,pcRel,on,inGrip,dim,ghost:((!gmap&&dim)||!!(inGrip&&inGrip.fill))};
 }
 function makeDot(cs){
   const dot=document.createElement("div"); dot.className="dot";
@@ -1163,6 +1166,7 @@ function cagedMap(shapes){
     for(let f=lo;f<=hi;f++) for(let s=1;s<=6;s++){
       const pcRel=((BASE[s]+f)%12-state.root+12)%12;
       if(state.active.has(pcRel)) map[s+":"+f]={croot:pcRel===0};
+      else if(WB_GHOST && WB_GHOST.has(pcRel)) map[s+":"+f]={fill:true};   // relleno silla→trono (fantasma dentro de la forma)
     }
   }));
   return map;
@@ -1206,6 +1210,15 @@ function renderCaged(){
     b.onclick=()=>{ state.caged=k; renderAll(); };
     chips.appendChild(b);
   });
+  // toggle Silla (pentatónica) / Trono (escala completa) — chair→throne, sólo en escalas con pentatónica
+  if(state.cagedMode==="scale" && wb.mode==="escala" && WB_SKEL[wb.scale]){
+    const sep=document.createElement("span"); sep.className="caged-hint"; sep.style.opacity=".5"; sep.textContent="│"; chips.appendChild(sep);
+    [["1","Silla"],["0","Trono"]].forEach(([v,lbl])=>{
+      const b=document.createElement("button"); b.className="chip sm"+(wb.skel===(v==="1")?" active":"");
+      b.textContent=lbl; b.title = v==="1" ? "Silla: la forma como caja pentatónica (5 notas) + las 2 de relleno en fantasma" : "Trono: la forma con la escala completa (7 notas)";
+      b.onclick=()=>{ wb.skel=(v==="1"); wbApply(); }; chips.appendChild(b);
+    });
+  }
   // texto de ayuda
   if(state.cagedMode==="chord"){
     const ty=cagedChordType();
@@ -1444,6 +1457,7 @@ function spellInKey(pc){
 let WB_FORCE=null;                               // grafía forzada por pc (modos Nota/Intervalo del workbench)
 let WB_SIG=null;                                 // armadura forzada (null = automática por raíz)
 let WB_BASS=null;                                // grado (pcRel) que va en el bajo según la inversión (null = sin inversión)
+let WB_GHOST=null;                               // notas de relleno a mostrar en fantasma (modo Esqueleto/pentatónica)
 let _lbl=null;                                   // cache por render
 function buildLabels(){
   const sm=spellMap(), tbl={};
@@ -1459,7 +1473,9 @@ function renderStaff(){
   const sig=sigMap(), sm=spellMap(), sigN=(WB_SIG!=null)?WB_SIG:(COF_ACC[homeKeyPc()]||0);
   let notes;
   if(state.mode==="chord") notes=[ heldNotes.size ? [...heldNotes].sort((a,b)=>a-b) : currentMidis() ];   // voicing (inversión/MIDI) o posición fundamental
-  else { const ms=[...state.active].sort((a,b)=>a-b).map(iv=>rootMidi()+iv); ms.push(rootMidi()+12);
+  else { let ivs=[...state.active]; if(WB_GHOST) ivs=ivs.concat([...WB_GHOST]);   // esqueleto: intercala las 2 de relleno
+         ivs.sort((a,b)=>a-b);
+         const ms=ivs.map(iv=>rootMidi()+iv); ms.push(rootMidi()+12);
          notes=ms.map(m=>[m]); }                            // sequence
   let svgEls="";
   const cLine=cv("--svg-line"), cClef=cv("--svg-clef"), cSig=cv("--svg-sig");
@@ -1486,7 +1502,8 @@ function renderStaff(){
       for(let ls=40; ls<=s; ls+=2) if(ls>38) svgEls+=`<line x1="${x-11}" y1="${yOf(ls)}" x2="${x+11}" y2="${yOf(ls)}" stroke="${cLine}" stroke-width="1"/>`;
       // sólo se dibuja el accidental si difiere de la armadura
       if(sp.acc!==(sig[sp.letter]||0)) svgEls+=`<text x="${x-19}" y="${y+4}" font-size="15" fill="${cClef}">${ACC_GLYPH[sp.acc]||""}</text>`;
-      svgEls+=`<ellipse data-pcr="${pcr}" cx="${x}" cy="${y}" rx="6.5" ry="5" fill="${col}" stroke="#1c1b22" stroke-width="1" transform="rotate(-18 ${x} ${y})"/>`;
+      const _fill = WB_GHOST && WB_GHOST.has(pcr);   // nota de relleno (esqueleto): fantasma
+      svgEls+=`<ellipse data-pcr="${pcr}" cx="${x}" cy="${y}" rx="6.5" ry="5" fill="${col}" stroke="#1c1b22" stroke-width="1"${_fill?' opacity="0.4" stroke-dasharray="2 1.5"':''} transform="rotate(-18 ${x} ${y})"/>`;
     });
   });
   svg.innerHTML=svgEls;
@@ -2034,7 +2051,9 @@ renderEar();
 const WB_CH={maj:[0,4,7],min:[0,3,7],aug:[0,4,8],dim:[0,3,6],dom7:[0,4,7,10],maj7:[0,4,7,11],m7:[0,3,7,10],m7b5:[0,3,6,10],dim7:[0,3,6,9],"6":[0,4,7,9],sus2:[0,2,7],sus4:[0,5,7]};
 const WB_CHL={maj:"Tríada mayor",min:"Tríada menor",aug:"Tríada aum.",dim:"Tríada dism.",dom7:"7ª dom.",maj7:"7ª mayor",m7:"7ª menor",m7b5:"7ª semidism.",dim7:"7ª dism.","6":"Sexta",sus2:"sus2",sus4:"sus4"};
 const WB_SC={major:[0,2,4,5,7,9,11],natmin:[0,2,3,5,7,8,10],harmin:[0,2,3,5,7,8,11],melmin:[0,2,3,5,7,9,11],dorian:[0,2,3,5,7,9,10],phryg:[0,1,3,5,7,8,10],lydian:[0,2,4,6,7,9,11],mixo:[0,2,4,5,7,9,10],locr:[0,1,3,5,6,8,10],pentM:[0,2,4,7,9],pentm:[0,3,5,7,10]};
-const WB_SCL={major:"Mayor",natmin:"Menor nat.",harmin:"Menor armónica",melmin:"Menor melódica",dorian:"Dórico",phryg:"Frigio",lydian:"Lidio",mixo:"Mixolidio",locr:"Locrio",pentM:"Pent. mayor",pentm:"Pent. menor"};
+const WB_SCL={major:"Mayor",natmin:"Menor nat.",harmin:"Menor armónica",melmin:"Menor melódica",dorian:"Dórico",phryg:"Frigio",lydian:"Lidio",mixo:"Mixolidio",locr:"Locrio"};
+// esqueleto pentatónico (chair) → completa (throne): qué 5 notas son la pentatónica y qué 2 se rellenan
+const WB_SKEL={ major:{penta:[0,2,4,7,9], fill:[5,11]}, natmin:{penta:[0,3,5,7,10], fill:[2,8]} };
 const WB_INT=[[1,"2m","2ª menor"],[2,"2M","2ª mayor"],[3,"3m","3ª menor"],[4,"3M","3ª mayor"],[5,"4J","4ª justa"],[6,"TT","Tritono"],[7,"5J","5ª justa"],[8,"6m","6ª menor"],[9,"6M","6ª mayor"],[10,"7m","7ª menor"],[11,"7M","7ª mayor"],[12,"8J","8ª justa"]];
 const WB_INTN={}; WB_INT.forEach(([s,sh,n])=>WB_INTN[s]=n);
 const WB_DIA={I:[0,"maj"],ii:[2,"min"],iii:[4,"min"],IV:[5,"maj"],V:[7,"maj"],vi:[9,"min"],"vii°":[11,"dim"]};
@@ -2061,7 +2080,7 @@ function fnTip(f){
   const qual=dim?"disminuido":(r===r.toUpperCase()?"mayor":"menor");
   return "Grado "+num+(flat?" ♭ (prestado)":"")+" — acorde "+qual;
 }
-const wb={mode:"acorde",letter:0,acc:0,chord:"maj",scale:"major",iv:{sh:"P5",size:5,semi:7},fn:"I",inv:0,keyMode:"major",seventh:false};
+const wb={mode:"acorde",letter:0,acc:0,chord:"maj",scale:"major",iv:{sh:"P5",size:5,semi:7},fn:"I",inv:0,keyMode:"major",seventh:false,skel:false};
 /* --- motor de análisis funcional --- */
 const AQ={maj:{t:[0,4,7],s:[0,4,7,11]},dom:{t:[0,4,7],s:[0,4,7,10]},min:{t:[0,3,7],s:[0,3,7,10]},dim:{t:[0,3,6],s:[0,3,6,9]},hd:{t:[0,3,6],s:[0,3,6,10]},aug:{t:[0,4,8],s:[0,4,8,11]}};
 const FN_SHARED={"V/ii":{lo:5,so:9,q:"dom"},"V/iii":{lo:6,so:11,q:"dom"},"V/IV":{lo:0,so:0,q:"dom"},"V/iv":{lo:0,so:0,q:"dom"},"V/V":{lo:1,so:2,q:"dom"},"V/vi":{lo:2,so:4,q:"dom"},"V/VI":{lo:2,so:3,q:"dom"},
@@ -2155,11 +2174,13 @@ const WB_NAMES=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
 function wbApply(){
   const _ind=$("wbInputInd"); if(_ind) _ind.style.display="none";
-  const rootPc=wbRootPc(); let root=rootPc, active=[0], eng="chord", _ac=null; WB_FORCE=null;
+  const rootPc=wbRootPc(); let root=rootPc, active=[0], eng="chord", _ac=null; WB_FORCE=null; WB_GHOST=null;
   if(wb.mode==="nota"){ active=[0]; WB_FORCE={}; WB_FORCE[rootPc]=spellNote(wb.letter,wb.acc); }
   else if(wb.mode==="intervalo"){ const tgt=spellInterval(wb.letter,wb.acc,wb.iv.size,wb.iv.semi); active=[0,wb.iv.semi];
     WB_FORCE={}; WB_FORCE[rootPc]=spellNote(wb.letter,wb.acc); WB_FORCE[tgt.pc]={letter:tgt.letter,acc:tgt.acc}; }
-  else if(wb.mode==="escala"){ active=WB_SC[wb.scale]; eng="scale"; }
+  else if(wb.mode==="escala"){ eng="scale"; const sk=WB_SKEL[wb.scale];
+    if(wb.skel && sk && state.caged){ active=sk.penta; WB_GHOST=new Set(sk.fill); }   // Silla (pentatónica + relleno fantasma) sólo con CAGED; sino Trono (completa)
+    else active=WB_SC[wb.scale]; }
   else if(wb.mode==="acorde"){ active=WB_CH[wb.chord]; if(wb.inv>=active.length) wb.inv=0; }
   else if(wb.mode==="analisis"){ _ac=wbAnalysisChord(); root=_ac.rootPc;
     active=[...new Set(_ac.tones.map(t=>((t.pc-root)%12+12)%12))];
@@ -2248,6 +2269,7 @@ function wbRenderControls(){
       h+='<div class="wb-b'+(wb.iv.sh===sh?' on':'')+'" data-ivsh="'+sh+'" data-ivsize="'+size+'" data-ivsemi="'+semi+'" title="'+(WB_IVES[sh]||sh)+' · '+semi+' semitonos">'+sh+'</div>'; });
     h+='</div><div class="wb-hint" style="margin-top:9px">Misma altura, distinta grafía: <b>A4</b> = F♯ vs <b>d5</b> = G♭ — mirá el pentagrama.</div>'; }
   else if(wb.mode==="escala"){ h='<div class="wb-cap2">Tipo de escala</div>'+wbGrid(Object.keys(WB_SCL).map(k=>[k,WB_SCL[k]]),wb.scale,"scale",4,k=>WB_SCTIP[k]);
+    if(WB_SKEL[wb.scale]) h+='<div class="wb-hint" style="margin-top:9px">Activá <b>Sistema CAGED</b> abajo para ver las formas como <b>Silla</b> (pentatónica) o <b>Trono</b> (escala completa).</div>';
     const dia=wbDiatonic();
     if(dia.length) h+='<div class="wb-cap2" style="margin-top:12px">Acordes de la escala (clic para abrir)</div><div class="wb-dia">'+dia.map(c=>`<span class="dc" data-droot="${c.root}" data-dq="${c.q}"><b>${c.name}</b><i>${c.rn}</i></span>`).join("")+'</div>'; }
   else if(wb.mode==="acorde"){ h='<div class="wb-cap2">Tipo de acorde</div>'+wbGrid(Object.keys(WB_CHL).map(k=>[k,WB_CHL[k]]),wb.chord,"chord",4,k=>WB_CHTIP[k]);
@@ -2262,6 +2284,7 @@ function wbRenderControls(){
   c.innerHTML=h;
   c.querySelectorAll("[data-ivsh]").forEach(b=>b.onclick=()=>{wb.iv={sh:b.dataset.ivsh,size:+b.dataset.ivsize,semi:+b.dataset.ivsemi};wbApply();});
   c.querySelectorAll("[data-scale]").forEach(b=>b.onclick=()=>{wb.scale=b.dataset.scale;wbApply();});
+  c.querySelectorAll("[data-skel]").forEach(b=>b.onclick=()=>{wb.skel=b.dataset.skel==="1";wbApply();});
   c.querySelectorAll("[data-chord]").forEach(b=>b.onclick=()=>{wb.chord=b.dataset.chord;wb.inv=0;wbApply();});
   c.querySelectorAll("[data-inv]").forEach(b=>b.onclick=()=>{wb.inv=+b.dataset.inv;wbApply();});
   c.querySelectorAll("[data-fn]").forEach(b=>b.onclick=()=>{wb.fn=b.dataset.fn;wbApply();});
