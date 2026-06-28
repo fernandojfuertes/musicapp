@@ -550,11 +550,11 @@
       </div>
     </div>
     <div class="wb-modes" id="wbModes">
-      <button data-m="nota">Nota</button>
-      <button data-m="intervalo">Intervalo</button>
-      <button data-m="escala">Escala</button>
-      <button data-m="acorde" class="on">Acorde</button>
-      <button data-m="analisis">Análisis</button>
+      <button data-m="nota" title="Una nota y sus enarmónicos">Nota</button>
+      <button data-m="intervalo" title="Distancia entre dos notas — calidad y grado (4A vs 5d)">Intervalo</button>
+      <button data-m="escala" title="Escalas y modos; sus notas y acordes diatónicos">Escala</button>
+      <button data-m="acorde" class="on" title="Acordes: tipo e inversión">Acorde</button>
+      <button data-m="analisis" title="Función armónica (números romanos) en la tonalidad">Análisis</button>
     </div>
   </div>
   <div class="wb-ctx">
@@ -2046,6 +2046,21 @@ const WB_IVGRID=[
   ["d2",2,0],["d3",3,2],["d4",4,4],["d5",5,6],["d6",6,7],["d7",7,9],["d8",8,11]
 ];
 const WB_IVES={A2:"2ª aumentada",A3:"3ª aumentada",A4:"4ª aumentada",A5:"5ª aumentada",A6:"6ª aumentada",A7:"7ª aumentada",A8:"8ª aumentada",M2:"2ª mayor",M3:"3ª mayor",P4:"4ª justa",P5:"5ª justa",M6:"6ª mayor",M7:"7ª mayor",P8:"8ª justa",m2:"2ª menor",m3:"3ª menor",m6:"6ª menor",m7:"7ª menor",d2:"2ª dism.",d3:"3ª dism.",d4:"4ª dism.",d5:"5ª disminuida",d6:"6ª dism.",d7:"7ª dism.",d8:"8ª dism."};
+// tooltips de los selectores de cada modo
+const WB_CHTIP={maj:"Tríada mayor — 1·3·5",min:"Tríada menor — 1·♭3·5",aug:"Tríada aumentada — 1·3·♯5",dim:"Tríada disminuida — 1·♭3·♭5",dom7:"Séptima de dominante — 1·3·5·♭7",maj7:"Séptima mayor — 1·3·5·7",m7:"Séptima menor — 1·♭3·5·♭7",m7b5:"Semidisminuido — 1·♭3·♭5·♭7",dim7:"Séptima disminuida — 1·♭3·♭5·♭♭7","6":"Sexta — 1·3·5·6",sus2:"Suspendido 2 — 1·2·5 (sin 3ª)",sus4:"Suspendido 4 — 1·4·5 (sin 3ª)"};
+const WB_SCTIP={major:"Mayor (jónico) — T·T·S·T·T·T·S",natmin:"Menor natural (eólico)",harmin:"Menor armónica — 7ª mayor",melmin:"Menor melódica — 6ª y 7ª mayores",dorian:"Dórico — menor con 6ª mayor",phryg:"Frigio — menor con ♭2",lydian:"Lidio — mayor con ♯4",mixo:"Mixolidio — mayor con ♭7",locr:"Locrio — ♭2 y ♭5",pentM:"Pentatónica mayor — 5 notas (sin 4ª ni 7ª)",pentm:"Pentatónica menor — 5 notas (sin 2ª ni 6ª)"};
+const WB_INVTIP=["Estado fundamental — la raíz en el bajo","1ª inversión — la 3ª en el bajo","2ª inversión — la 5ª en el bajo","3ª inversión — la 7ª en el bajo"];
+function fnTip(f){
+  if(!f) return "";
+  const sd=f.match(/^V\/(.+)$/); if(sd) return "Dominante secundaria — el V de "+sd[1];
+  const lt=f.match(/^vii°\/(.+)$/); if(lt) return "Sensible secundaria — el vii° de "+lt[1];
+  const sp={"Gr⁶":"Sexta aumentada alemana","It⁶":"Sexta aumentada italiana","Fr⁶":"Sexta aumentada francesa","N⁶":"Napolitana — ♭II en 1ª inversión","V+":"Dominante aumentada — V con 5ª aumentada"};
+  if(sp[f]) return sp[f];
+  const flat=f.indexOf("♭")===0; let r=f.replace("♭",""); const dim=r.indexOf("°")>=0; r=r.replace("°","");
+  const RN={i:1,ii:2,iii:3,iv:4,v:5,vi:6,vii:7}, num=RN[r.toLowerCase()]||"";
+  const qual=dim?"disminuido":(r===r.toUpperCase()?"mayor":"menor");
+  return "Grado "+num+(flat?" ♭ (prestado)":"")+" — acorde "+qual;
+}
 const wb={mode:"acorde",letter:0,acc:0,chord:"maj",scale:"major",iv:{sh:"P5",size:5,semi:7},fn:"I",inv:0,keyMode:"major",seventh:false};
 /* --- motor de análisis funcional --- */
 const AQ={maj:{t:[0,4,7],s:[0,4,7,11]},dom:{t:[0,4,7],s:[0,4,7,10]},min:{t:[0,3,7],s:[0,3,7,10]},dim:{t:[0,3,6],s:[0,3,6,9]},hd:{t:[0,3,6],s:[0,3,6,10]},aug:{t:[0,4,8],s:[0,4,8,11]}};
@@ -2219,9 +2234,9 @@ function wbRenderCircle(){
   host.querySelectorAll(".seg").forEach(p=>p.onclick=()=>{ const i=+p.dataset.i, k=p.dataset.m==="maj"?CIRCLE[i].maj:CIRCLE[i].min;
     wb.letter=k[0]; wb.acc=k[1]; wb.keyMode=p.dataset.m==="maj"?"major":"minor"; $("wbTonPop").classList.remove("open"); wbApply(); });
 }
-function wbGrid(items,sel,attr,cols){
+function wbGrid(items,sel,attr,cols,tip){
   let h=`<div class="wb-grid wb-cols-${cols}">`;
-  items.forEach(([key,lbl])=>h+=`<div class="wb-b${String(sel)===String(key)?' on':''}" data-${attr}="${key}">${lbl}</div>`);
+  items.forEach(([key,lbl])=>{ const t=tip&&tip(key); h+=`<div class="wb-b${String(sel)===String(key)?' on':''}" data-${attr}="${key}"${t?` title="${String(t).replace(/"/g,'&quot;')}"`:''}>${lbl}</div>`; });
   return h+'</div>';
 }
 function wbRenderControls(){
@@ -2230,20 +2245,20 @@ function wbRenderControls(){
   if(wb.mode==="nota"){ /* sin panel: la nota se elige en Raíz y los enarmónicos van en la tira */ }
   else if(wb.mode==="intervalo"){ h='<div class="wb-cap2">Intervalo · calidad y grado</div><div class="wb-grid" style="grid-template-columns:repeat(7,1fr)">';
     WB_IVGRID.forEach(([sh,size,semi])=>{ if(semi<0){ h+='<div class="wb-b" style="visibility:hidden"></div>'; return; }
-      h+='<div class="wb-b'+(wb.iv.sh===sh?' on':'')+'" data-ivsh="'+sh+'" data-ivsize="'+size+'" data-ivsemi="'+semi+'">'+sh+'</div>'; });
+      h+='<div class="wb-b'+(wb.iv.sh===sh?' on':'')+'" data-ivsh="'+sh+'" data-ivsize="'+size+'" data-ivsemi="'+semi+'" title="'+(WB_IVES[sh]||sh)+' · '+semi+' semitonos">'+sh+'</div>'; });
     h+='</div><div class="wb-hint" style="margin-top:9px">Misma altura, distinta grafía: <b>A4</b> = F♯ vs <b>d5</b> = G♭ — mirá el pentagrama.</div>'; }
-  else if(wb.mode==="escala"){ h='<div class="wb-cap2">Tipo de escala</div>'+wbGrid(Object.keys(WB_SCL).map(k=>[k,WB_SCL[k]]),wb.scale,"scale",4);
+  else if(wb.mode==="escala"){ h='<div class="wb-cap2">Tipo de escala</div>'+wbGrid(Object.keys(WB_SCL).map(k=>[k,WB_SCL[k]]),wb.scale,"scale",4,k=>WB_SCTIP[k]);
     const dia=wbDiatonic();
     if(dia.length) h+='<div class="wb-cap2" style="margin-top:12px">Acordes de la escala (clic para abrir)</div><div class="wb-dia">'+dia.map(c=>`<span class="dc" data-droot="${c.root}" data-dq="${c.q}"><b>${c.name}</b><i>${c.rn}</i></span>`).join("")+'</div>'; }
-  else if(wb.mode==="acorde"){ h='<div class="wb-cap2">Tipo de acorde</div>'+wbGrid(Object.keys(WB_CHL).map(k=>[k,WB_CHL[k]]),wb.chord,"chord",4);
+  else if(wb.mode==="acorde"){ h='<div class="wb-cap2">Tipo de acorde</div>'+wbGrid(Object.keys(WB_CHL).map(k=>[k,WB_CHL[k]]),wb.chord,"chord",4,k=>WB_CHTIP[k]);
     const n=WB_CH[wb.chord].length, invs=[[0,"Fundamental"],[1,"1ª inv."],[2,"2ª inv."],[3,"3ª inv."]].slice(0,n);
-    h+='<div class="wb-cap2" style="margin-top:12px">Inversión</div>'+wbGrid(invs,wb.inv,"inv",n); }
+    h+='<div class="wb-cap2" style="margin-top:12px">Inversión</div>'+wbGrid(invs,wb.inv,"inv",n,k=>WB_INVTIP[+k]); }
   else if(wb.mode==="analisis"){ const grid=wb.keyMode==="minor"?GRID_MIN:GRID_MAJ;
     h='<div class="wb-cap2">Función · '+fmtSp(spellNote(wb.letter,wb.acc))+' '+(wb.keyMode==="minor"?"menor":"mayor")+'</div><div class="wb-grid" style="grid-template-columns:repeat(7,1fr)">';
-    grid.forEach(row=>row.forEach(f=>{ if(f===""){ h+='<div class="wb-b" style="visibility:hidden"></div>'; return; } h+='<div class="wb-b'+(wb.fn===f?' on':'')+'" data-fn="'+f+'">'+f+'</div>'; }));
-    h+='</div><div style="display:flex;gap:8px;margin-top:11px"><div class="wb-grid wb-cols-2" style="flex:1"><div class="wb-b'+(wb.keyMode==="major"?' on':'')+'" data-keymode="major">Mayor</div><div class="wb-b'+(wb.keyMode==="minor"?' on':'')+'" data-keymode="minor">Menor</div></div><div class="wb-grid wb-cols-2" style="flex:1"><div class="wb-b'+(!wb.seventh?' on':'')+'" data-sev="0">Tríadas</div><div class="wb-b'+(wb.seventh?' on':'')+'" data-sev="1">7ª</div></div></div>';
+    grid.forEach(row=>row.forEach(f=>{ if(f===""){ h+='<div class="wb-b" style="visibility:hidden"></div>'; return; } h+='<div class="wb-b'+(wb.fn===f?' on':'')+'" data-fn="'+f+'" title="'+fnTip(f).replace(/"/g,'&quot;')+'">'+f+'</div>'; }));
+    h+='</div><div style="display:flex;gap:8px;margin-top:11px"><div class="wb-grid wb-cols-2" style="flex:1"><div class="wb-b'+(wb.keyMode==="major"?' on':'')+'" data-keymode="major" title="Analizar en tonalidad mayor">Mayor</div><div class="wb-b'+(wb.keyMode==="minor"?' on':'')+'" data-keymode="minor" title="Analizar en tonalidad menor">Menor</div></div><div class="wb-grid wb-cols-2" style="flex:1"><div class="wb-b'+(!wb.seventh?' on':'')+'" data-sev="0" title="Acordes de 3 notas (sin 7ª)">Tríadas</div><div class="wb-b'+(wb.seventh?' on':'')+'" data-sev="1" title="Agregar la 7ª al acorde">7ª</div></div></div>';
     if(!FN_SPECIAL[wb.fn]){ const nT=wb.seventh?4:3, invs=[[0,"Fund."],[1,"1ª"],[2,"2ª"],[3,"3ª"]].slice(0,nT);
-      h+='<div class="wb-cap2" style="margin-top:11px">Inversión (cifrado)</div>'+wbGrid(invs,wb.inv,"inv",nT); } }
+      h+='<div class="wb-cap2" style="margin-top:11px">Inversión (cifrado)</div>'+wbGrid(invs,wb.inv,"inv",nT,k=>WB_INVTIP[+k]); } }
   c.innerHTML=h;
   c.querySelectorAll("[data-ivsh]").forEach(b=>b.onclick=()=>{wb.iv={sh:b.dataset.ivsh,size:+b.dataset.ivsize,semi:+b.dataset.ivsemi};wbApply();});
   c.querySelectorAll("[data-scale]").forEach(b=>b.onclick=()=>{wb.scale=b.dataset.scale;wbApply();});
