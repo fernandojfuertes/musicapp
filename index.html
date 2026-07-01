@@ -462,14 +462,50 @@
   .wb-ton-pop.open{display:block;}
   .wb-ton-pop .pop-arrow{position:absolute;top:-7px;left:28px;width:12px;height:12px;background:var(--panel-a);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg);}
   .wb-ton-pop .pop-h{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);text-align:center;margin-bottom:6px;}
-  #wbCofSlot svg{display:block;width:224px;height:224px;margin:0 auto;}
+  #wbCofSlot svg{display:block;width:100%;max-width:230px;height:auto;margin:0 auto;}
   #wbCofSlot .seg{cursor:pointer;transition:filter .1s;} #wbCofSlot .seg:hover{filter:brightness(1.08);}
   #wbCofSlot text{pointer-events:none;font-family:system-ui,sans-serif;}
-  .wb-result{min-width:0;}
-  .wb-main{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;margin-bottom:11px;}
+  /* ---- Mapa de tonalidades · panel lateral (Opción B) ---- */
+  #workbench{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:18px;align-items:stretch;max-width:1210px;}
+  .wb-main-col{grid-column:1;grid-row:1;min-width:0;}
+  #workbench > .wb-inst{grid-column:1 / -1;}   /* piano y mástil a todo el ancho, por debajo del círculo */
+  .wb-rail{grid-column:2;grid-row:1;width:266px;margin-bottom:11px;display:flex;flex-direction:column;background:var(--panel-a);border:1px solid var(--line);border-radius:12px;padding:12px 13px;box-shadow:0 14px 34px -20px rgba(0,0,0,.4);}
+  .wb-rail-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;flex:none;}
+  .wb-rail-body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .wb-rail-title{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);}
+  .wb-rail-legend{display:flex;flex-wrap:wrap;gap:3px 12px;justify-content:center;margin:9px 0 5px;font-family:"Space Mono",monospace;font-size:9.5px;color:var(--muted);}
+  .wb-rail-legend .lg-dom{color:var(--accent-ink);} .wb-rail-legend .lg-sub{color:var(--amber-deep);}
+  .wb-rail-hint{font-size:11px;color:var(--faint);line-height:1.45;margin:4px 2px 0;text-align:center;}
+  .wb-rail-hint b{color:var(--muted);font-weight:600;}
+  #wbTonPill{cursor:default;} #wbTonPill:hover .v{text-decoration:none;}
+  @media(max-width:900px){ #workbench{grid-template-columns:1fr;} .wb-rail{grid-column:1;width:100%;} .wb-rail #wbCofSlot svg{max-width:260px;} }
+  /* ---- resultado enriquecido "el porqué" (Fase 5) ---- */
+  .wb-why{grid-column:1 / -1;background:var(--panel-a);border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin-bottom:11px;}
+  .wb-why .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:700px){ .wb-why .why-grid{grid-template-columns:1fr;} }
+  .why-stack{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+  .why-n{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;background:linear-gradient(180deg,var(--sel-a),var(--sel-b));color:#fff;border:1px solid var(--sel-bd);}
+  .why-lnk{display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--faint);font-family:"Space Mono",monospace;font-size:9px;min-width:42px;text-align:center;}
+  .why-arw{color:var(--accent-ink);font-size:12px;line-height:1;}
+  .why-formula{display:flex;gap:7px;flex-wrap:wrap;}
+  .why-deg{font-family:"Space Mono",monospace;font-size:12px;color:var(--ink);background:var(--panel-b);border:1px solid var(--line);border-radius:8px;padding:5px 9px;}
+  .why-deg b{color:var(--accent-ink);} .why-deg .why-dn{color:var(--faint);font-size:10px;margin-left:5px;}
+  .why-txt{font-size:13px;line-height:1.55;color:var(--ink);}
+  .why-fxrow{display:flex;gap:8px;flex-wrap:wrap;}
+  .why-fx{display:flex;flex-direction:column;gap:1px;background:var(--panel-b);border:1px solid var(--line);border-radius:9px;padding:7px 11px;}
+  .why-rn{font-family:"Space Mono",monospace;font-size:14px;font-weight:700;color:var(--accent-ink);}
+  .why-fk{font-size:11px;color:var(--muted);} .why-fr{font-size:10px;color:var(--faint);}
+  .why-fnote{font-size:12px;color:var(--faint);line-height:1.5;}
+  .why-theory{margin-top:13px;background:var(--panel-b);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:10px 13px;font-size:12px;line-height:1.55;color:var(--muted);}
+  .why-theory b{color:var(--ink);}
+  .why-ns{width:32px;height:32px;font-size:12px;} .why-steps{gap:4px;}
+  .why-n.why-wide{width:auto;min-width:38px;height:34px;padding:0 14px;border-radius:17px;font-size:15px;}
+  .why-deg.why-alt{border-color:var(--accent-ink);background:rgba(74,163,255,.09);} .why-deg.why-alt b{color:var(--teal);}
+  .wb-result{min-width:0;display:flex;flex-direction:column;}
+  .wb-main{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-bottom:11px;}
   .wb-main.solo-staff{grid-template-columns:1fr;}
-  .wb-staff-card{display:flex;flex-direction:column;gap:9px;min-height:108px;background:var(--panel-a);border:1px solid var(--line);border-radius:9px;padding:11px 12px;}
-  .wb-staff-card svg.staff{margin-top:auto;margin-bottom:auto;}
+  .wb-staff-card{flex:1;display:flex;flex-direction:column;gap:9px;min-height:108px;background:var(--panel-a);border:1px solid var(--line);border-radius:9px;padding:11px 12px;}
+  .wb-staff-card svg.staff{width:100%;max-width:600px;margin:auto;padding:10px 8px;border:none;box-shadow:none;border-radius:8px;background:linear-gradient(180deg,var(--staff-a),var(--staff-b));}
   .wb-reslab{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:11px;background:var(--panel-a);border:1px solid var(--line);border-radius:10px;padding:6px 12px;}
   .wb-reslab .rs-text{display:flex;flex-direction:column;line-height:1.1;}
   .wb-reslab .big{font-family:system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--ink);line-height:1.05;white-space:nowrap;}
@@ -542,6 +578,7 @@
 </head>
 <body>
 <div id="workbench">
+  <div class="wb-main-col">
   <div class="wb-bar">
     <div class="wb-menu-wrap">
       <button class="wb-menu-btn" id="wbMenuBtn" aria-label="Menú"><span></span><span></span><span></span></button>
@@ -562,9 +599,7 @@
     <div class="wb-ctx-left">
       <div class="wb-field wb-field-ton">
         <div class="wb-cap2">Tonalidad</div>
-        <div class="pill ton" id="wbTonPill"><span class="v" id="wbKey">C mayor</span><span class="caret">▾</span>
-          <div class="wb-ton-pop" id="wbTonPop"><div class="pop-arrow"></div><div class="pop-h">Círculo de quintas</div><div id="wbCofSlot"></div></div>
-        </div>
+        <div class="pill ton" id="wbTonPill"><span class="v" id="wbKey">C mayor</span></div>
       </div>
       <div class="wb-field wb-field-res">
         <div class="wb-cap2" id="wbResCap">Notas del acorde</div>
@@ -585,6 +620,18 @@
     <div class="wb-result"><div class="wb-staff-card" id="wbStaffSlot"><div class="wb-cap2">Pentagrama</div></div></div>
   </div>
   <div class="wb-focus" id="wbFocus"><button data-fi="piano" class="on">Piano</button><button data-fi="fret">Mástil</button><button data-fi="both">Ambos</button></div>
+  </div><!-- /wb-main-col -->
+  <aside class="wb-rail" id="wbRail">
+    <div class="wb-rail-head">
+      <span class="wb-rail-title">Mapa de tonalidades</span>
+    </div>
+    <div class="wb-rail-body">
+      <div id="wbCofSlot"></div>
+      <div class="wb-rail-legend"><span class="lg lg-dom">● V · quinta →</span><span class="lg lg-sub">● IV · cuarta ←</span></div>
+      <p class="wb-rail-hint">Clic en una tonalidad para fijarla. Las vecinas muestran a dónde <b>resuelve</b> la música: la <b>quinta</b> (dominante) y la <b>cuarta</b> (subdominante).</p>
+    </div>
+  </aside>
+  <section class="wb-why" id="wbWhy" style="display:none"></section>
   <div class="wb-inst wb-piano"><div class="wb-cap">Piano · dos manos</div><div id="wbPianoSlot"></div></div>
   <div class="wb-inst wb-fret"><div class="wb-cap">Mástil · guitarra</div><div id="wbFretSlot"></div></div>
 </div>
@@ -595,50 +642,11 @@
 </aside>
 <div class="app" id="legacyApp" style="display:none">
 
-  <!-- Armonía | Pentagrama -->
+  <!-- fuente oculta para el workbench: pentagrama -->
   <div class="split">
     <div class="card t1">
-      <h2>
-        <span class="lab">Armonía</span>
-        <span class="toggle-pill">
-          <button id="mChord" class="on">Acorde</button>
-          <button id="mScale">Escala</button>
-        </span>
-      </h2>
-      <div class="seg" id="presets"></div>
-      <div class="root-pick">
-        <span class="cap">Raíz</span>
-        <span class="note" id="rootName">C</span>
-        <input type="range" id="rootSlider" min="0" max="11" value="0" />
-      </div>
-      <div class="row">
-        <button class="play" id="playMain">▶ Sonar acorde</button>
-        <button class="play" id="playArp">▶ Arpegio</button>
-      </div>
-    </div>
-
-    <div class="card t1">
       <h2><span class="lab">Pentagrama</span></h2>
-      <svg class="staff" id="staff" viewBox="0 0 700 160" preserveAspectRatio="xMidYMid meet"></svg>
-    </div>
-  </div>
-
-  <!-- Explorador armónico -->
-  <div class="card">
-    <h2><span class="lab">Explorador armónico · círculo de quintas</span></h2>
-    <div class="cof">
-      <div class="cof-circle">
-        <svg id="cof" viewBox="0 0 380 380" aria-label="círculo de quintas"></svg>
-        <p class="cof-note" style="text-align:center;font-family:'Space Mono',monospace">clic en una tonalidad para fijar la raíz</p>
-      </div>
-      <div class="cof-info">
-        <div id="suggest"></div>
-        <div>
-          <div class="sg-h">Acordes diatónicos · clic = agregar a la base</div>
-          <div class="cof-chords" id="cofChords"></div>
-          <p class="cof-note" id="cofChordNote"></p>
-        </div>
-      </div>
+      <svg class="staff" id="staff" viewBox="0 0 500 160" preserveAspectRatio="xMidYMid meet"></svg>
     </div>
   </div>
 
@@ -681,26 +689,7 @@
     <div id="fbHost"></div>
   </div>
 
-  <!-- Inversiones -->
-  <div class="card t3" id="invCard">
-    <span class="tier-tag">práctica</span>
-    <h2><span class="lab">Inversiones</span></h2>
-    <div class="toggles"><label><input type="checkbox" id="tgInv" /> Modo inversiones (mostrar solo el voicing)</label></div>
-    <div id="invControls" style="display:none">
-      <div class="row"><span class="cap">Inversión</span><div class="seg" id="invButtons"></div></div>
-      <div class="row"><span class="cap">Cuerdas</span><div class="seg" id="setButtons"></div></div>
-      <div class="row"><span class="cap">Posición</span>
-        <button class="chip sm" id="vPrev">◀</button>
-        <button class="chip sm" id="vAll">Todas</button>
-        <button class="chip sm" id="vNext">▶</button>
-        <span id="vCount" style="color:var(--muted);font-size:13px"></span>
-      </div>
-      <div class="stack" id="stackReadout"></div>
-    </div>
-    <p class="inv-msg" id="invMsg" style="display:none"></p>
-  </div>
-
-  <!-- Progresión + Ear-training -->
+  <!-- Progresión -->
   <div class="botrow">
     <div class="card t3">
       <span class="tier-tag">práctica</span>
@@ -718,22 +707,6 @@
       <p class="hint">Elegí un acorde arriba (o en el círculo) y tocá <b>+</b> para sumarlo. Reproduce con luces en piano/guitarra/pentagrama. Clic en un acorde para cargarlo.</p>
     </div>
 
-    <div class="card t3">
-      <span class="tier-tag">práctica</span>
-      <h2><span class="lab">Ear-training</span></h2>
-      <div class="row" style="margin-top:0;justify-content:space-between">
-        <span class="cap">Modo</span>
-        <span class="toggle-pill" id="etMode">
-          <button data-m="intervalos" class="on">Intervalos</button>
-          <button data-m="acordes">Acordes</button>
-          <button data-m="escalas">Escalas</button>
-        </span>
-      </div>
-      <div class="row"><button class="play" id="etPlay" style="width:100%;justify-content:center;display:flex">▶ Reproducir</button></div>
-      <p class="hint" id="etPrompt" style="margin-top:14px">Tocá Reproducir y adiviná qué suena.</p>
-      <div class="et-opts" id="etOpts"></div>
-      <div class="et-score" id="etScore"></div>
-    </div>
   </div>
 
   <!-- Herramientas: Metrónomo + Afinador -->
@@ -755,76 +728,11 @@
       <div class="row"><button class="play" id="metroToggle" style="flex:1;justify-content:center;display:flex">▶ Iniciar</button></div>
     </div>
 
-    <div class="card">
-      <h2><span class="lab">Afinador</span><span class="caged-hint" id="tunerTuning"></span></h2>
-      <div class="tuner-strings" id="tunerStrings"></div>
-      <div class="tuner-read">
-        <div class="tuner-note" id="tunerNote">—</div>
-        <div class="tuner-meter"><span class="tuner-zero"></span><span class="tuner-needle" id="tunerNeedle"></span></div>
-        <div class="tuner-cents" id="tunerCents">activá el micrófono</div>
-      </div>
-      <div class="row"><button class="play alt" id="tunerToggle" style="flex:1;justify-content:center;display:flex">🎤 Activar micrófono</button></div>
-      <p class="hint">Afina una guitarra real por <b>micrófono</b>. Si tu guitarra envía MIDI, ya funciona como el controlador — no necesita afinador.</p>
-    </div>
   </div>
 
-  <!-- Herramientas: Intervalos + Identificador -->
-  <div class="split" style="margin-top:20px">
-    <div class="card">
-      <h2><span class="lab">Buscador de intervalos</span>
-        <span class="toggle-pill" id="ivMode">
-          <button data-m="build" class="on">Construir</button>
-          <button data-m="id">Identificar</button>
-        </span>
-      </h2>
-      <div id="ivBuild">
-        <div class="row"><span class="cap">Raíz</span><select class="sel sm" id="ivRoot"></select>
-          <span class="cap" style="width:auto">Intervalo</span><select class="sel sm" id="ivType"></select></div>
-      </div>
-      <div id="ivId" style="display:none">
-        <div class="row"><span class="cap">Nota 1</span><select class="sel sm" id="ivN1"></select>
-          <span class="cap" style="width:auto">Nota 2</span><select class="sel sm" id="ivN2"></select></div>
-      </div>
-      <div class="stack"><span class="stack-notes" id="ivResult">—</span><div class="stack-ivl" id="ivDetail"></div></div>
-      <div class="row"><button class="play" id="ivPlay" style="flex:1;justify-content:center;display:flex">▶ Sonar intervalo</button></div>
-    </div>
-
-    <div class="card">
-      <h2><span class="lab">Identificador de acordes</span><button class="chip sm" id="idClear">Limpiar</button></h2>
-      <div class="id-keys" id="idKeys"></div>
-      <div class="stack"><span class="stack-notes" id="idResult">Elegí notas…</span><div class="stack-ivl" id="idDetail"></div></div>
-      <div class="row"><button class="play" id="idPlay" style="flex:1;justify-content:center;display:flex">▶ Sonar acorde</button></div>
-    </div>
-  </div>
-
-  <!-- MIDI: botón flotante + drawer -->
-  <button class="midi-fab" id="midiFab">
-    <span class="led" id="midiLed"></span>
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-      <circle cx="12" cy="12" r="9"/><circle cx="12" cy="6.6" r="1.1" fill="currentColor"/>
-      <circle cx="7" cy="9.6" r="1.1" fill="currentColor"/><circle cx="17" cy="9.6" r="1.1" fill="currentColor"/>
-      <circle cx="8.4" cy="15" r="1.1" fill="currentColor"/><circle cx="15.6" cy="15" r="1.1" fill="currentColor"/></svg>
-    MIDI
-  </button>
   <button class="theme-fab" id="themeFab" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema">
     <span id="themeIcon">☀</span><span id="themeTxt">Claro</span>
   </button>
-  <div class="backdrop" id="midiBackdrop"></div>
-  <aside class="drawer" id="midiDrawer">
-    <div class="drawer-head">
-      <span class="lab">Controlador MIDI</span>
-      <button class="drawer-x" id="midiClose">✕</button>
-    </div>
-    <button class="play" id="midiConnect" style="width:100%">Conectar MIDI</button>
-    <select class="sel" id="midiDevice" style="display:none;width:100%"></select>
-    <p class="hint" id="midiStatus">Conectá un teclado MIDI por USB/Bluetooth y tocá:
-    la app detecta el acorde, lo resalta en piano/mástil/pentagrama y lo hace sonar.
-    Si tu controlador (p.ej. Arturia KeyLab) muestra varios puertos, se elige el del
-    teclado automáticamente; podés cambiarlo en la lista. (Requiere Chrome, Edge o Firefox en escritorio.)</p>
-    <div class="sg-h" style="margin-top:20px">Pads del controlador</div>
-    <div id="padList"></div>
-    <p class="hint">Tocá <b>Aprender</b> y golpeá un pad para asignarle esa acción. Los pads asignados no interfieren con la detección de acordes.</p>
-  </aside>
 </div>
 
 <script>
@@ -1468,7 +1376,7 @@ function buildLabels(){
 function noteLabel(pc){ pc=((pc%12)+12)%12; if(WB_FORCE && WB_FORCE[pc]) return fmtSp(WB_FORCE[pc]); if(!_lbl) _lbl=buildLabels(); return _lbl[pc]!=null?_lbl[pc]:noteName(pc); }
 function renderStaff(){
   const svg=document.getElementById("staff"); if(!svg) return;
-  const W=700, lineGap=12, yE4=95;       // y of bottom line (E4, step 30)
+  const W=500, lineGap=12, yE4=95;       // y of bottom line (E4, step 30) — lienzo más compacto que 700
   const yOf=s=>yE4-(s-30)*(lineGap/2);
   const sig=sigMap(), sm=spellMap(), sigN=(WB_SIG!=null)?WB_SIG:(COF_ACC[homeKeyPc()]||0);
   let notes;
@@ -1509,143 +1417,6 @@ function renderStaff(){
   svg.innerHTML=svgEls;
 }
 
-/* ===================== actions (shared by buttons + pads) ===================== */
-function setChordMode(){ if(state.mode!=="chord"){ state.mode="chord"; state.preset="Mayor"; state.active=new Set(CHORDS["Mayor"]); state.voicingStep=-1; renderAll(); } }
-function setScaleMode(){ if(state.mode!=="scale"){ state.mode="scale"; state.invMode=false; state.preset="Mayor (Jónico)"; state.active=new Set(SCALES["Mayor (Jónico)"]); renderAll(); } }
-function toggleMode(){ state.mode==="chord"?setScaleMode():setChordMode(); }
-function cyclePreset(dir){ const map=presetMap(), names=Object.keys(map);
-  let i=names.indexOf(state.preset); i=(i<0?0:(i+dir+names.length)%names.length);
-  state.preset=names[i]; state.active=new Set(map[names[i]]); state.voicingStep=-1; renderAll(); }
-function cycleInversion(){ if(state.mode!=="chord") return; const n=[...state.active].length;
-  if(n!==3 && n!==4){ state.invMode=true; renderAll(); return; }
-  state.invMode=true; state.inversion=(state.inversion+1)%n; state.voicingStep=-1; renderAll(); }
-function stepVoicing(dir){ const gd=getGrips(), t=gd?gd.total:0; if(!t) return;
-  state.voicingStep=(state.voicingStep<0?(dir>0?0:t-1):(state.voicingStep+dir+t)%t); renderAll(); }
-function allVoicings(){ state.voicingStep=-1; renderAll(); }
-
-const ACTIONS = {
-  playChord:{label:"Sonar acorde/escala", run:()=>{ audio(); playChord(); }},
-  playArp:  {label:"Arpegio", run:()=>{ audio(); playArp(); }},
-  invToggle:{label:"Modo inversiones", run:()=>{ state.invMode=!state.invMode; state.voicingStep=-1; renderAll(); }},
-  invNext:  {label:"Inversión siguiente", run:cycleInversion},
-  voicePrev:{label:"Voicing ◀", run:()=>stepVoicing(-1)},
-  voiceNext:{label:"Voicing ▶", run:()=>stepVoicing(1)},
-  presetNext:{label:"Siguiente acorde/escala", run:()=>cyclePreset(1)},
-  modeToggle:{label:"Acorde / Escala", run:toggleMode}
-};
-
-/* ===================== harmony explorer: circle of fifths ===================== */
-const COF_C=190;
-function cofPolar(r,deg){ const a=(deg-90)*Math.PI/180; return [COF_C+r*Math.cos(a), COF_C+r*Math.sin(a)]; }
-function cofSector(ri,ro,a0,a1){
-  const [x1,y1]=cofPolar(ro,a0),[x2,y2]=cofPolar(ro,a1),[x3,y3]=cofPolar(ri,a1),[x4,y4]=cofPolar(ri,a0);
-  return `M${x1} ${y1} A${ro} ${ro} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${ri} ${ri} 0 0 0 ${x4} ${y4} Z`;
-}
-function renderCircle(){
-  const svg=document.getElementById("cof"); if(!svg) return;
-  const nat=natureOf(), root=state.root;
-  const homeIdx = nat==="major" ? COF_MAJIDX[root] : COF_MINIDX[root];
-  const arc=new Set([(homeIdx+11)%12, homeIdx, (homeIdx+1)%12]);
-  const RO=152, RM=104, RII=56;
-  let g="";
-  const cMaj=cv("--cof-maj"), cMajS=cv("--cof-maj-s"), cMin=cv("--cof-min"), cMinS=cv("--cof-min-s"),
-        cText=cv("--cof-text"), cTextMin=cv("--cof-text-min"), cCenter=cv("--cof-center"),
-        cCenterS=cv("--cof-center-s"), cFaint=cv("--cof-faint"), cAccent=cv("--accent-ink");
-  for(let i=0;i<12;i++){
-    const c=i*30, a0=c-15, a1=c+15, inArc=arc.has(i);
-    let f=cMaj, s=cMajS;
-    if(inArc) f="rgba(232,162,60,.16)";
-    if(nat==="major"&&i===homeIdx) f="rgba(232,162,60,.92)"; else if(nat==="minor"&&i===homeIdx) f="rgba(232,162,60,.30)";
-    if(cofHoverParent===i) s=cAccent;
-    g+=`<path class="seg" data-ring="maj" data-idx="${i}" d="${cofSector(RM,RO,a0,a1)}" fill="${f}" stroke="${s}" stroke-width="${cofHoverParent===i?2.5:1}"/>`;
-    let f2=cMin, s2=cMinS;
-    if(inArc) f2="rgba(232,162,60,.10)";
-    if(nat==="minor"&&i===homeIdx) f2="rgba(232,162,60,.92)"; else if(nat==="major"&&i===homeIdx) f2="rgba(232,162,60,.30)";
-    g+=`<path class="seg" data-ring="min" data-idx="${i}" d="${cofSector(RII,RM,a0,a1)}" fill="${f2}" stroke="${s2}" stroke-width="1"/>`;
-    const [mx,my]=cofPolar(128,c),[nx,ny]=cofPolar(80,c);
-    const ms=(nat==="major"&&i===homeIdx), mn=(nat==="minor"&&i===homeIdx);
-    g+=`<text class="keytext" x="${mx}" y="${my}" text-anchor="middle" dominant-baseline="central" font-size="14" fill="${ms?'#1a1208':cText}">${COF_RING[i].maj}</text>`;
-    g+=`<text class="keytext" x="${nx}" y="${ny}" text-anchor="middle" dominant-baseline="central" font-size="11" fill="${mn?'#1a1208':cTextMin}">${COF_RING[i].min}</text>`;
-  }
-  g+=`<circle cx="${COF_C}" cy="${COF_C}" r="${RII-4}" fill="${cofHoverExtra?'rgba(91,199,191,.16)':cCenter}" stroke="${cofHoverExtra?'#5bc7bf':cCenterS}" stroke-width="${cofHoverExtra?2.5:1}"/>`;
-  const cname = nat==="minor" ? noteName(root)+"m" : noteName(root);
-  const homePc = nat==="minor" ? (root+3)%12 : root;
-  g+=`<text x="${COF_C}" y="${COF_C-9}" text-anchor="middle" font-size="25" fill="${cAccent}" font-family="system-ui,sans-serif" font-weight="600">${cofHoverExtra?'fuera':cname}</text>`;
-  g+=`<text x="${COF_C}" y="${COF_C+13}" text-anchor="middle" font-size="10" fill="${cofHoverExtra?'#5bc7bf':cFaint}" font-family="Space Mono,monospace">${cofHoverExtra?'del círculo':'armadura '+COF_SIG[homePc]}</text>`;
-  svg.innerHTML=g;
-  svg.querySelectorAll(".seg").forEach(p=>p.onclick=()=>{
-    const i=+p.dataset.idx;
-    if(p.dataset.ring==="maj"){ state.root=COF_RING[i].mp; state.active=new Set([0,4,7]); state.preset="Mayor"; }
-    else { state.root=COF_RING[i].np; state.active=new Set([0,3,7]); state.preset="Menor"; }
-    state.mode="chord"; state.voicingStep=-1;
-    document.getElementById("rootSlider").value=state.root;
-    renderAll();
-  });
-}
-function renderSuggester(){
-  const box=document.getElementById("suggest"); if(!box) return;
-  const root=state.root, rn=noteName(root), ctx=contextTones();
-  const dia=[], extra=[];
-  for(const key in SCALES){
-    const iv=SCALES[key], set=new Set(iv);
-    if(!ctx.every(t=>set.has(t))) continue;
-    const p=parentMajorPc(iv, root);
-    const it={key, label:`${rn} ${SCALE_LABEL[key]||key}`, parent:p};
-    (p!=null?dia:extra).push(it);
-  }
-  dia.sort((a,b)=>COF_ACC[b.parent]-COF_ACC[a.parent]);   // brightest first
-  let h=`<div class="lab" style="margin-bottom:4px">Escalas que entran</div>`;
-  h+=`<div class="sg-h">Diatónicas · en el círculo</div>`;
-  if(!dia.length) h+=`<p class="cof-note" style="margin:0">—</p>`;
-  dia.forEach(d=>{ const act=(state.mode==="scale"&&state.preset===d.key)?" active":"";
-    h+=`<div class="scl${act}" data-key="${d.key}" data-parent="${d.parent}"><span class="pl">▶</span>`+
-       `<span class="nm">${d.label}</span><span class="sig">${COF_SIG[d.parent]} · ${COF_RING[COF_MAJIDX[d.parent]].maj}</span></div>`; });
-  h+=`<div class="sg-h">Extra · fuera del círculo</div>`;
-  if(!extra.length) h+=`<p class="cof-note" style="margin:0">—</p>`;
-  extra.forEach(e=>{ const act=(state.mode==="scale"&&state.preset===e.key)?" active":"";
-    h+=`<div class="scl extra${act}" data-key="${e.key}" data-extra="1"><span class="pl">▶</span>`+
-       `<span class="nm">${e.label}</span><span class="sig">color</span></div>`; });
-  box.innerHTML=h;
-  box.querySelectorAll(".scl").forEach(s=>{
-    s.onclick=()=>{ const k=s.dataset.key; state.mode="scale"; state.preset=k;
-      state.active=new Set(SCALES[k]); state.voicingStep=-1; renderAll(); audio(); playArp(); };
-    s.onmouseenter=()=>{ if(s.dataset.parent!=null && s.dataset.parent!=="null"){ cofHoverParent=COF_MAJIDX[+s.dataset.parent]; cofHoverExtra=false; }
-      else { cofHoverExtra=true; cofHoverParent=null; } renderCircle(); };
-    s.onmouseleave=()=>{ cofHoverParent=null; cofHoverExtra=false; renderCircle(); };
-  });
-}
-function renderDiatChords(){
-  const row=document.getElementById("cofChords"), noteEl=document.getElementById("cofChordNote"); if(!row) return;
-  const root=state.root, nat=natureOf();
-  const homePc=nat==="minor"?(root+3)%12:root;
-  const useFlat=(COF_SIG[homePc]||"").includes("♭");
-  const NM=useFlat?FLAT:SHARP;
-  let degs, txt;
-  if(nat==="minor"){
-    degs=[["i",0,"m","Tónica"],["ii°",2,"°","Sensible"],["III",3,"","Relativo"],["iv",5,"m","Subdom."],
-          ["v",7,"m","Dominante"],["VI",8,"","Submed."],["VII",10,"","Subtón."]];
-    txt="Menor natural: el v es menor. Para que resuelva fuerte usá V7 (menor armónica).";
-  } else {
-    degs=[["I",0,"","Tónica"],["ii",2,"m","Subdom."],["iii",4,"m","Mediante"],["IV",5,"","Subdom."],
-          ["V",7,"","Dominante"],["vi",9,"m","Relativo"],["vii°",11,"°","Sensible"]];
-    txt="En el círculo, I-IV-V quedan en sectores contiguos; ii-iii-vi son sus relativas menores.";
-  }
-  row.innerHTML="";
-  degs.forEach(([d,iv,q,fn])=>{
-    const cr=(root+iv)%12;
-    const chip=document.createElement("span"); chip.className="cof-chip"+(fn==="Dominante"?" dom":"");
-    chip.innerHTML=`<span class="dc-nm">${NM[cr]}${q}</span><span class="dc-rn">${d}</span><span class="dc-fn">${fn}</span>`;
-    chip.title="Agregar a la progresión";
-    chip.onclick=()=>{
-      const ints = q==="m"?[0,3,7] : q==="°"?[0,3,6] : [0,4,7];
-      state.progression.push({root:cr, intervals:ints, label:NM[cr]+q});
-      renderProgression();
-      audio(); ints.forEach(i=>playMidi(60+cr+i,0,1.2));
-    };
-    row.appendChild(chip);
-  });
-  noteEl.textContent=txt;
-}
 
 /* ===================== progresión (constructor + loop/tempo) ===================== */
 let progTimer=null, playingIdx=-1, progLoop=true, progState="stopped";
@@ -1692,43 +1463,6 @@ function renderProgression(){
   const lb=document.getElementById("progLoop"); if(lb) lb.className="tbtn"+(progLoop?" on":"");
 }
 
-/* ===================== ear-training ===================== */
-const ET={
-  intervalos:{ items:[["2ª menor",1],["2ª mayor",2],["3ª menor",3],["3ª mayor",4],["4ª justa",5],
-    ["5ª justa",7],["6ª mayor",9],["7ª menor",10],["7ª mayor",11],["8ª",12]],
-    play:v=>{ playMidi(60,0,0.7); playMidi(60+v,0.45,0.8); } },
-  acordes:{ items:[["Mayor",[0,4,7]],["Menor",[0,3,7]],["Maj7",[0,4,7,11]],["m7",[0,3,7,10]],
-    ["Dom7",[0,4,7,10]],["dim",[0,3,6]],["Aug",[0,4,8]]],
-    play:iv=>iv.forEach(n=>playMidi(60+n,0,1.4)) },
-  escalas:{ items:[["Mayor",[0,2,4,5,7,9,11]],["Menor natural",[0,2,3,5,7,8,10]],["Dórico",[0,2,3,5,7,9,10]],
-    ["Frigio",[0,1,3,5,7,8,10]],["Pent. menor",[0,3,5,7,10]],["Blues",[0,3,5,6,7,10]]],
-    play:iv=>[...iv,12].forEach((n,i)=>playMidi(60+n,i*0.22,0.4)) },
-};
-let etMode="intervalos", etAnswer=null, etOpts=[], etPicked=null, etOk=0, etTotal=0, etStreak=0;
-function etShuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function etNew(){
-  const items=ET[etMode].items;
-  etAnswer=items[Math.floor(Math.random()*items.length)];
-  const others=etShuffle(items.filter(x=>x!==etAnswer)).slice(0,3);
-  etOpts=etShuffle([etAnswer,...others]); etPicked=null;
-  renderEar(); etReplay();
-}
-function etReplay(){ if(!etAnswer) return; audio(); ET[etMode].play(etAnswer[1]); }
-function etPick(o){ if(etPicked) return; etPicked=o; etTotal++;
-  if(o===etAnswer){ etOk++; etStreak++; } else etStreak=0; renderEar(); }
-function renderEar(){
-  const opts=document.getElementById("etOpts"); if(!opts) return;
-  [...document.querySelectorAll("#etMode button")].forEach(b=>b.className=b.dataset.m===etMode?"on":"");
-  opts.innerHTML="";
-  etOpts.forEach(o=>{ const b=document.createElement("div"); b.className="et-opt"; b.textContent=o[0];
-    if(etPicked){ if(o===etAnswer) b.classList.add("ok"); else if(o===etPicked) b.classList.add("no"); }
-    b.onclick=()=>etPick(o); opts.appendChild(b); });
-  document.getElementById("etScore").innerHTML = etTotal?`<span>Aciertos: ${etOk}/${etTotal}</span><span>racha 🔥 ${etStreak}</span>`:"";
-  const pr=document.getElementById("etPrompt");
-  if(pr) pr.textContent = etPicked ? (etPicked===etAnswer?"¡Bien! ✓":`Era: ${etAnswer[0]}`) : (etAnswer?"¿Qué escuchaste?":"Tocá Reproducir y adiviná qué suena.");
-  const pb=document.getElementById("etPlay"); if(pb) pb.textContent = (etAnswer&&!etPicked)?"▶ Reproducir de nuevo":"▶ Reproducir";
-}
-
 /* ===================== wire up ===================== */
 function renderAll(){ _lbl=null;                 // invalida cache de etiquetas
   renderPiano(); renderStaff(); renderCaged(); renderFretboard(); renderProgression(); }
@@ -1738,128 +1472,13 @@ let _rsz; window.addEventListener("resize",()=>{ clearTimeout(_rsz);
   _rsz=setTimeout(()=>{ renderPiano(); renderFretboard(); }, 160); });
 document.getElementById("tgCaged").onchange=e=>{ state.caged=e.target.checked?(state.caged||"E"):null; renderAll(); };
 
-/* ===================== Web MIDI ===================== */
-let midiAccess=null, midiInput=null;
-const heldNotes=new Set();
+const heldNotes=new Set();               // queda vacío: entrada MIDI hardware retirada; lo leen renderPiano/renderStaff
 function $(id){ return document.getElementById(id); }
 
-// Identify root + chord from held MIDI notes (reuses CHORD_NAMES formulas)
-function midiAnalyze(midis){
-  if(!midis.length) return null;
-  const bassPc = Math.min(...midis) % 12;
-  const pcs = [...new Set(midis.map(m=>((m%12)+12)%12))];
-  const matches=[];
-  for(const r of pcs){
-    const key = pcs.map(pc=>(pc-r+12)%12).sort((a,b)=>a-b).join(",");
-    if(CHORD_NAMES[key]) matches.push({root:r, isBass:r===bassPc});
-  }
-  const chosen = matches.find(m=>m.isBass) || matches[0] || {root:bassPc};
-  const active = new Set(pcs.map(pc=>(pc-chosen.root+12)%12));
-  return {root:chosen.root, active};
-}
-function applyHeld(){
-  if(!heldNotes.size) return;                 // freeze last chord when keys released
-  const res = midiAnalyze([...heldNotes]);
-  if(!res) return;
-  WB_FORCE=null; WB_SIG=0;                     // entrada: grafía contextual normal, sin armadura
-  state.mode="chord"; state.root=res.root; state.active=res.active;
-  state.preset=null; state.voicingStep=-1; state.caged=null; state.invMode=false;
-  const rs=$("rootSlider"); if(rs) rs.value=res.root;
-  renderAll();
-  if(typeof wbOnInput==="function") wbOnInput(res);   // refleja la identificación en el workbench
-}
-/* ----- pads (MIDI learn) ----- */
-let learnTarget=null;
-function matchPad(ch,note){
-  for(const k in state.padMap){ const b=state.padMap[k]; if(b&&b.ch===ch&&b.note===note) return k; }
-  return null;
-}
-function renderPads(){
-  const box=$("padList"); if(!box) return; box.innerHTML="";
-  for(const k in ACTIONS){
-    const row=document.createElement("div"); row.className="pad-row";
-    const lbl=document.createElement("span"); lbl.className="pad-lbl"; lbl.textContent=ACTIONS[k].label;
-    const b=state.padMap[k];
-    const info=document.createElement("span"); info.className="pad-bind";
-    info.textContent= learnTarget===k ? "tocá un pad…" : (b? `ch${b.ch+1}·n${b.note}` : "—");
-    const learn=document.createElement("button"); learn.className="chip sm"+(learnTarget===k?" learning":"");
-    learn.textContent= learnTarget===k?"…":"Aprender";
-    learn.onclick=()=>{ learnTarget=(learnTarget===k?null:k); renderPads(); };
-    const clr=document.createElement("button"); clr.className="chip sm"; clr.textContent="✕"; clr.title="Borrar";
-    clr.onclick=()=>{ delete state.padMap[k]; if(learnTarget===k) learnTarget=null; renderPads(); };
-    row.append(lbl,info,learn,clr); box.appendChild(row);
-  }
-}
-function onMidi(ev){
-  const [status,note,vel]=ev.data, cmd=status & 0xf0, ch=status & 0x0f;
-  if(cmd===0x90 && vel>0){
-    if(learnTarget){ state.padMap[learnTarget]={ch,note}; learnTarget=null; renderPads(); return; }
-    const act=matchPad(ch,note);
-    if(act){ playMidi(note,0,0.18); ACTIONS[act].run(); return; }   // pad → action
-    heldNotes.add(note); playMidi(note,0,1.3);
-    applyHeld(); renderPiano();                                      // re-render (registro por mano se calcula adentro)
-    return;
-  }
-  // note-off only clears the held set silently: the last fully-pressed chord stays frozen
-  // on screen until the next note is played (analysis happens on note-on only).
-  else if(cmd===0x80 || (cmd===0x90 && vel===0)){
-    if(matchPad(ch,note)) return;
-    heldNotes.delete(note);
-  }
-}
-function selectInput(id){
-  if(midiInput) midiInput.onmidimessage=null;
-  midiInput=midiAccess.inputs.get(id);
-  if(midiInput){ midiInput.onmidimessage=onMidi;
-    $("midiStatus").textContent="Escuchando: "+midiInput.name+" · tocá un acorde.";
-    $("midiLed").classList.add("live"); }
-}
-// Some controllers (e.g. Arturia KeyLab Essential mk3) expose several ports: the playing
-// keyboard plus a DAW/control-surface port. Rank so the keyboard wins by default.
-function rankInput(name){
-  const n=(name||"").toLowerCase();
-  let s=0;
-  if(/\b(daw|mcu|mackie|hui|control|ecu|dcu)\b|midiin[2-9]|midi 2/.test(n)) s+=100; // control port
-  if(/keylab|keyboard|keys|\bkey\b/.test(n)) s-=10;
-  return s;
-}
-function populateInputs(){
-  const inputs=[...midiAccess.inputs.values()], sel=$("midiDevice");
-  if(!inputs.length){ sel.style.display="none"; $("midiLed").classList.remove("live");
-    $("midiStatus").textContent="No se detectó ningún dispositivo. Conectá tu controlador y volvé a intentar."; return; }
-  sel.style.display=""; sel.innerHTML="";
-  inputs.forEach(inp=>{ const o=document.createElement("option"); o.value=inp.id; o.textContent=inp.name; sel.appendChild(o); });
-  const ranked=[...inputs].sort((a,b)=>rankInput(a.name)-rankInput(b.name));
-  const keep = midiInput && inputs.some(i=>i.id===midiInput.id) ? midiInput.id : ranked[0].id;
-  sel.value=keep; selectInput(keep);
-  sel.onchange=()=>selectInput(sel.value);
-  $("midiConnect").textContent="MIDI conectado ✓";
-}
-async function ensureMidi(){                   // obtiene acceso (auto o por botón); onstatechange cubre hot-plug
-  if(midiAccess) return true;
-  if(!navigator.requestMIDIAccess){
-    $("midiStatus").textContent="Tu navegador no soporta Web MIDI. Usá Chrome, Edge o Firefox en escritorio (Safari/iOS no lo soportan)."; return false; }
-  try{
-    midiAccess=await navigator.requestMIDIAccess({sysex:false});
-    midiAccess.onstatechange=populateInputs;
-    populateInputs();
-    return true;
-  }catch(e){ $("midiStatus").textContent="No se pudo acceder al MIDI: "+e.message; return false; }
-}
-async function connectMidi(){ audio(); await ensureMidi(); }   // botón: además desbloquea el audio
-$("midiConnect").onclick=connectMidi;
-// autodetección al cargar (y al conectar/desconectar, vía onstatechange)
-ensureMidi();
 // desbloquea el audio en el primer gesto del usuario, para que el MIDI suene sin tener que apretar "Conectar"
 (function(){ const unlock=()=>{ audio(); window.removeEventListener("pointerdown",unlock); window.removeEventListener("keydown",unlock); };
   window.addEventListener("pointerdown",unlock); window.addEventListener("keydown",unlock); })();
 
-/* MIDI drawer open/close */
-function openMidi(){ $("midiDrawer").classList.add("open"); $("midiBackdrop").classList.add("open"); }
-function closeMidi(){ $("midiDrawer").classList.remove("open"); $("midiBackdrop").classList.remove("open"); }
-$("midiFab").onclick=openMidi;
-$("midiClose").onclick=closeMidi;
-$("midiBackdrop").onclick=closeMidi;
 
 /* progression transport */
 $("progPlay").onclick=()=>{ progState==="playing"?pauseProg():playProg(); };
@@ -1867,11 +1486,7 @@ $("progStop").onclick=stopProg;
 $("progLoop").onclick=()=>{ progLoop=!progLoop; renderProgression(); };
 $("progTempo").oninput=e=>{ state.tempo=+e.target.value; $("progBpm").textContent="♩ = "+state.tempo; };
 
-/* ear-training */
-$("etPlay").onclick=()=>{ (!etAnswer||etPicked)?etNew():etReplay(); };
-[...document.querySelectorAll("#etMode button")].forEach(b=>b.onclick=()=>{ etMode=b.dataset.m; etAnswer=null; etPicked=null; etOpts=[]; renderEar(); });
-
-/* ===================== herramientas: metrónomo · afinador · intervalos · identificador ===================== */
+/* ===================== herramientas: metrónomo · intervalos · identificador ===================== */
 const NOTE_SHARP=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
 /* --- Metrónomo (scheduler con lookahead, Web Audio) --- */
@@ -1910,102 +1525,6 @@ function metroTap(){
     if(bpm>=40&&bpm<=240){ metro.bpm=bpm; $("metroBpm").value=bpm; $("metroBpmVal").textContent="♩ = "+bpm; } }
 }
 
-/* --- Afinador (micrófono + autocorrelación) --- */
-const tuner={on:false,ctx:null,analyser:null,stream:null,buf:null,raf:null};
-function tunerTargets(){ const t=TUNINGS[state.tuning]||TUNINGS["Estándar"]; return t.map(m=>m+state.capo); }
-function tunerRenderStrings(nearMidi){
-  const box=$("tunerStrings"); if(!box) return; box.innerHTML="";
-  const tt=$("tunerTuning"); if(tt) tt.textContent=state.tuning+(state.capo?(" · capo "+state.capo):"");
-  tunerTargets().forEach(m=>{ const el=document.createElement("div"); el.className="ts"+(nearMidi===m?" near":"");
-    el.textContent=NOTE_SHARP[((m%12)+12)%12]+(Math.floor(m/12)-1); box.appendChild(el); });
-}
-function autoCorrelate(buf,sr){
-  let SIZE=buf.length, rms=0;
-  for(let i=0;i<SIZE;i++) rms+=buf[i]*buf[i];
-  rms=Math.sqrt(rms/SIZE); if(rms<0.01) return -1;          // muy poca señal
-  let r1=0,r2=SIZE-1; const thres=0.2;
-  for(let i=0;i<SIZE/2;i++){ if(Math.abs(buf[i])<thres){ r1=i; break; } }
-  for(let i=1;i<SIZE/2;i++){ if(Math.abs(buf[SIZE-i])<thres){ r2=SIZE-i; break; } }
-  buf=buf.slice(r1,r2); SIZE=buf.length;
-  const c=new Array(SIZE).fill(0);
-  for(let i=0;i<SIZE;i++) for(let j=0;j<SIZE-i;j++) c[i]+=buf[j]*buf[j+i];
-  let d=0; while(d<SIZE-1 && c[d]>c[d+1]) d++;
-  let maxval=-1,maxpos=-1;
-  for(let i=d;i<SIZE;i++){ if(c[i]>maxval){ maxval=c[i]; maxpos=i; } }
-  let T0=maxpos; const x1=c[T0-1]||0,x2=c[T0]||0,x3=c[T0+1]||0,a=(x1+x3-2*x2)/2,b=(x3-x1)/2;
-  if(a) T0=T0-b/(2*a);
-  return T0>0 ? sr/T0 : -1;
-}
-function tunerLoop(){
-  if(!tuner.on) return;
-  tuner.analyser.getFloatTimeDomainData(tuner.buf);
-  const f=autoCorrelate(tuner.buf,tuner.ctx.sampleRate);
-  if(f>0){
-    const midiF=69+12*Math.log2(f/440), midi=Math.round(midiF), cents=Math.round((midiF-midi)*100), intune=Math.abs(cents)<=5;
-    $("tunerNote").textContent=NOTE_SHARP[((midi%12)+12)%12]+(Math.floor(midi/12)-1);
-    $("tunerCents").textContent=(cents>0?"+":"")+cents+" cents "+(intune?"· afinado ✓":(cents>0?"· bajá ↓":"· subí ↑"));
-    const nd=$("tunerNeedle"); nd.style.left=(50+Math.max(-50,Math.min(50,cents)))+"%"; nd.classList.toggle("intune",intune);
-    const targets=tunerTargets(); let near=targets[0]; targets.forEach(m=>{ if(Math.abs(m-midiF)<Math.abs(near-midiF)) near=m; });
-    document.querySelectorAll("#tunerStrings .ts").forEach((el,i)=>{ const isn=targets[i]===near;
-      el.classList.toggle("near",isn&&!(intune&&midi===near)); el.classList.toggle("ok",isn&&intune&&midi===near); });
-  }
-  tuner.raf=requestAnimationFrame(tunerLoop);
-}
-async function tunerStart(){
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ $("tunerCents").textContent="micrófono no soportado"; return; }
-  try{ tuner.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}); }
-  catch(e){ $("tunerCents").textContent="micrófono denegado"; return; }
-  tuner.ctx=audio(); const src=tuner.ctx.createMediaStreamSource(tuner.stream);
-  tuner.analyser=tuner.ctx.createAnalyser(); tuner.analyser.fftSize=2048; tuner.buf=new Float32Array(tuner.analyser.fftSize);
-  src.connect(tuner.analyser); tuner.on=true; $("tunerToggle").textContent="⏹ Detener"; tunerLoop();
-}
-function tunerStop(){ tuner.on=false; if(tuner.raf) cancelAnimationFrame(tuner.raf);
-  if(tuner.stream){ tuner.stream.getTracks().forEach(t=>t.stop()); tuner.stream=null; }
-  $("tunerToggle").textContent="🎤 Activar micrófono"; $("tunerNote").textContent="—"; $("tunerCents").textContent="activá el micrófono";
-  const nd=$("tunerNeedle"); if(nd){ nd.style.left="50%"; nd.classList.remove("intune"); } tunerRenderStrings(null); }
-
-/* --- Buscador de intervalos --- */
-const INTERVALS=[
-  {n:"Unísono",s:0},{n:"2ª menor",s:1},{n:"2ª mayor",s:2},{n:"3ª menor",s:3},{n:"3ª mayor",s:4},
-  {n:"4ª justa",s:5},{n:"Tritono (4A/5d)",s:6},{n:"5ª justa",s:7},{n:"6ª menor",s:8},{n:"6ª mayor",s:9},
-  {n:"7ª menor",s:10},{n:"7ª mayor",s:11},{n:"8ª justa",s:12}
-];
-let ivModeVal="build";
-function ivFill(){
-  const r=$("ivRoot"); if(r&&!r.options.length){ NOTE_SHARP.forEach((n,i)=>r.add(new Option(n,i))); }
-  const t=$("ivType"); if(t&&!t.options.length){ INTERVALS.forEach((iv,i)=>t.add(new Option(iv.n+" · "+iv.s+" st",i))); t.value=4; }
-  [["ivN1",0],["ivN2",4]].forEach(([id,def])=>{ const s=$(id); if(s&&!s.options.length){ NOTE_SHARP.forEach((n,i)=>s.add(new Option(n,i))); s.value=def; } });
-}
-function ivCalc(){
-  let a,semi;
-  if(ivModeVal==="build"){ a=+$("ivRoot").value; semi=INTERVALS[+$("ivType").value].s; }
-  else { a=+$("ivN1").value; const b=+$("ivN2").value; semi=((b-a)%12+12)%12; }
-  const b=(a+semi)%12, iv=INTERVALS[semi]||INTERVALS[0];
-  $("ivResult").innerHTML=`<b>${NOTE_SHARP[a]}</b> → <b>${NOTE_SHARP[b]}</b>`;
-  $("ivDetail").textContent=`${iv.n} · ${semi} semitono${semi===1?"":"s"}`;
-  return {a:60+a, b:60+a+semi};
-}
-function ivPlay(){ audio(); const {a,b}=ivCalc(); playMidi(a,0,0.6); playMidi(b,0.4,0.6); playMidi(a,1.0,0.9); playMidi(b,1.0,0.9); }
-
-/* --- Identificador de acordes (reusa la lógica de CHORD_NAMES sobre todas las raíces) --- */
-const idSel=new Set();
-function idRender(){
-  const box=$("idKeys"); if(!box) return; box.innerHTML="";
-  NOTE_SHARP.forEach((n,pc)=>{ const b=document.createElement("button");
-    b.className="ik"+(n.indexOf("#")>=0?" sharp":"")+(idSel.has(pc)?" on":""); b.textContent=n;
-    b.onclick=()=>{ idSel.has(pc)?idSel.delete(pc):idSel.add(pc); idRender(); idIdentify(); };
-    box.appendChild(b); });
-}
-function idIdentify(){
-  const pcs=[...idSel].sort((a,b)=>a-b);
-  if(pcs.length<2){ $("idResult").textContent= pcs.length? NOTE_SHARP[pcs[0]]+" — elegí más notas" : "Elegí notas…"; $("idDetail").textContent=""; return; }
-  const names=[];
-  for(const r of pcs){ const key=pcs.map(pc=>(pc-r+12)%12).sort((a,b)=>a-b).join(","); if(CHORD_NAMES[key]) names.push(NOTE_SHARP[r]+" "+CHORD_NAMES[key]); }
-  if(names.length){ $("idResult").textContent=names[0];
-    $("idDetail").textContent= names.length>1 ? "También: "+names.slice(1).join(" · ") : pcs.map(p=>NOTE_SHARP[p]).join(" "); }
-  else { $("idResult").textContent="Acorde no reconocido"; $("idDetail").textContent=pcs.map(p=>NOTE_SHARP[p]).join(" "); }
-}
-
 /* --- wiring de las herramientas --- */
 $("metroBpm").oninput=e=>{ metro.bpm=+e.target.value; $("metroBpmVal").textContent="♩ = "+metro.bpm; };
 $("metroSig").onchange=e=>{ metro.beats=+e.target.value; metro.cur=0; metroRenderBeats(); };
@@ -2013,20 +1532,6 @@ $("metroAccent").onchange=e=>{ metro.accent=e.target.checked; metroRenderBeats()
 $("metroTap").onclick=metroTap;
 $("metroToggle").onclick=()=>{ metro.on?metroStop():metroStart(); };
 metroRenderBeats();
-
-$("tunerToggle").onclick=()=>{ tuner.on?tunerStop():tunerStart(); };
-tunerRenderStrings(null);
-
-$("ivMode").querySelectorAll("button").forEach(b=>b.onclick=()=>{ ivModeVal=b.dataset.m;
-  $("ivMode").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
-  $("ivBuild").style.display=ivModeVal==="build"?"":"none"; $("ivId").style.display=ivModeVal==="id"?"":"none"; ivCalc(); });
-["ivRoot","ivType","ivN1","ivN2"].forEach(id=>{ const e=$(id); if(e) e.onchange=ivCalc; });
-$("ivPlay").onclick=ivPlay;
-ivFill(); ivCalc();
-
-$("idClear").onclick=()=>{ idSel.clear(); idRender(); idIdentify(); };
-$("idPlay").onclick=()=>{ audio(); [...idSel].sort((a,b)=>a-b).forEach(pc=>playMidi(60+pc,0,1.3)); };
-idRender(); idIdentify();
 
 /* ===================== tema claro/oscuro ===================== */
 function applyTheme(theme,save){
@@ -2045,8 +1550,6 @@ function applyTheme(theme,save){
 
 applyTuning();
 renderAll();
-renderPads();
-renderEar();
 /* ===================== WORKBENCH controller (rediseño · fase 1) ===================== */
 const WB_CH={maj:[0,4,7],min:[0,3,7],aug:[0,4,8],dim:[0,3,6],dom7:[0,4,7,10],maj7:[0,4,7,11],m7:[0,3,7,10],m7b5:[0,3,6,10],dim7:[0,3,6,9],"6":[0,4,7,9],sus2:[0,2,7],sus4:[0,5,7]};
 const WB_CHL={maj:"Tríada mayor",min:"Tríada menor",aug:"Tríada aum.",dim:"Tríada dism.",dom7:"7ª dom.",maj7:"7ª mayor",m7:"7ª menor",m7b5:"7ª semidism.",dim7:"7ª dism.","6":"Sexta",sus2:"sus2",sus4:"sus4"};
@@ -2172,6 +1675,243 @@ function wbOnInput(res){ wbShowIdentified(res.root,res.active); }
 function wbIdentifyFromState(){ if(!state.active.size) return; wbShowIdentified(state.root,state.active); }
 const WB_NAMES=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
+/* ===================== resultado enriquecido · "el porqué" (Fase 5 · modo Acorde) ===================== */
+const WHY_WORDS={
+  maj:"Tríada mayor: raíz + 3ª mayor + 5ª justa. Suena brillante y estable.",
+  min:"Tríada menor: raíz + 3ª menor + 5ª justa. Suena más oscuro y melancólico.",
+  aug:"Tríada aumentada: dos 3ª mayores apiladas (5ª aumentada). Tensa e inestable.",
+  dim:"Tríada disminuida: dos 3ª menores apiladas (5ª disminuida). Tensa, pide resolver.",
+  dom7:"Tríada mayor + 7ª menor. La tensión clásica que resuelve al I: es el V7.",
+  maj7:"Tríada mayor + 7ª mayor. Suave, luminoso, jazzy.",
+  m7:"Tríada menor + 7ª menor. Suave y versátil; el ii de los ii–V–I.",
+  m7b5:"Tríada disminuida + 7ª menor (semidisminuido). El ii de las tonalidades menores.",
+  dim7:"Cuatro notas apiladas en 3ª menores iguales (divide la octava en 4). Muy tenso; suele resolver.",
+  "6":"Tríada mayor + 6ª mayor. Cerrado y resuelto; una alternativa dulce al maj7.",
+  sus2:"La 3ª se reemplaza por la 2ª mayor. Abierto, sin color mayor ni menor.",
+  sus4:"La 3ª se reemplaza por la 4ª justa. Suspensión que 'pide' bajar a la 3ª."
+};
+const WHY_FAMILY={maj:0,min:0,aug:0,dim:0,dom7:1,maj7:1,m7:1,m7b5:1,dim7:1,"6":2,sus2:3,sus4:3};
+const WHY_THEORY=[
+  "Una <b>tríada</b> son tres notas apiladas por terceras: raíz, tercera y quinta. La tercera decide si suena mayor o menor; la quinta le da cuerpo.",
+  "Un <b>acorde de séptima</b> agrega una cuarta nota sobre la tríada: la séptima. Suma color y una tensión que 'pide' resolver — el motor de la armonía funcional.",
+  "El <b>acorde de sexta</b> cambia la séptima por la sexta: suena resuelto y cerrado, sin la tensión de la séptima.",
+  "Un acorde <b>suspendido (sus)</b> reemplaza la tercera por la 2ª o la 4ª, quitándole el carácter mayor/menor hasta que 'resuelve' a la tercera."
+];
+const WHY_FUNC={
+  maj:[["I",0],["IV",5],["V",7]], min:[["ii",2],["iii",4],["vi",9]], dim:[["vii°",11]],
+  maj7:[["Imaj7",0],["IVmaj7",5]], dom7:[["V7",7]], m7:[["ii7",2],["iii7",4],["vi7",9]], m7b5:[["viiø7",11]]
+};
+const WHY_ROLE={"I":"tónica (reposo)","IV":"subdominante","V":"dominante (tensión)","ii":"pre-dominante","iii":"mediante","vi":"relativo menor","vii°":"sensible","Imaj7":"tónica","IVmaj7":"subdominante","V7":"dominante · resuelve al I","ii7":"arranca el ii–V–I","iii7":"mediante","vi7":"relativo menor","viiø7":"ii de tonalidad menor"};
+const WHY_INTV={1:"2ª m",2:"2ª M",3:"3ª menor",4:"3ª mayor",5:"4ª justa",6:"tritono",7:"5ª justa",8:"6ª m",9:"6ª M",10:"7ª m",11:"7ª M"};
+const KEY_NAMES=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];   // nombres de tonalidad convencionales (bemoles donde corresponde)
+const WHY_CTX={   // acordes sin función diatónica mayor simple: nota honesta (diatónico vs cromático)
+  "6":"Diatónico: es un color sobre el I o el IV (le suma la 6ª a la tríada mayor). Comparte notas con el vi7 relativo.",
+  sus2:"Diatónico: suspensión que quita la 3ª — no suena ni mayor ni menor. Se arma sobre casi cualquier grado y 'resuelve' a la tríada.",
+  sus4:"Diatónico: suspensión que 'pide' bajar a la 3ª. Muy común sobre el V (Vsus4 → V).",
+  aug:"Cromático: no pertenece a la escala mayor. Aparece como V+ o por conducción de voces (voice leading).",
+  dim7:"Cromático: típico como vii°7 (dominante) en tonalidad menor, o como acorde de paso."
+};
+const WHY_DEGW={"R":"raíz","b3":"tercera menor","3":"tercera mayor","b5":"quinta dism.","5":"quinta justa","#5":"quinta aum.","6":"sexta mayor","2":"segunda","4":"cuarta justa","b7":"séptima menor","7":"séptima mayor","°7":"séptima dism."};
+function wbRenderWhy(){
+  const host=$("wbWhy"); if(!host) return;
+  if(wb.mode==="acorde") return wbRenderWhyChord(host);
+  if(wb.mode==="escala") return wbRenderWhyScale(host);
+  if(wb.mode==="intervalo") return wbRenderWhyInterval(host);
+  if(wb.mode==="nota") return wbRenderWhyNote(host);
+  if(wb.mode==="analisis") return wbRenderWhyAnalysis(host);
+  host.style.display="none"; host.innerHTML="";
+}
+function wbRenderWhyChord(host){
+  host.style.display="";
+  const iv=WB_CH[wb.chord], root=wbRootPc();
+  let stack="";
+  iv.forEach((i,k)=>{ stack+=`<span class="why-n">${noteLabel((root+i)%12)}</span>`;
+    if(k<iv.length-1){ const gap=iv[k+1]-i; stack+=`<span class="why-lnk"><span class="why-arw">→</span>${WHY_INTV[gap]||gap+" st"}</span>`; } });
+  let formula="";
+  iv.forEach(i=>{ let deg=IVL[i];
+    if(wb.chord==="6"&&i===9) deg="6"; else if(wb.chord==="aug"&&i===8) deg="#5";
+    else if(wb.chord==="dim7"&&i===9) deg="°7"; else if(wb.chord==="sus2"&&i===2) deg="2";
+    else if(wb.chord==="sus4"&&i===5) deg="4";
+    const d=deg.replace("b","♭"), w=WHY_DEGW[deg]||"";
+    formula+=`<span class="why-deg"><b>${d}</b><span class="why-dn">${noteLabel((root+i)%12)}${w?" · "+w:""}</span></span>`; });
+  const fmap=WHY_FUNC[wb.chord]; let fx;
+  if(fmap){ fx=fmap.map(([rn,off])=>{ const kp=((root-off)%12+12)%12;
+      return `<span class="why-fx"><span class="why-rn">${rn}</span><span class="why-fk">en ${KEY_NAMES[kp]} mayor</span><span class="why-fr">${WHY_ROLE[rn]||""}</span></span>`; }).join("");
+  } else fx=`<span class="why-fnote">${WHY_CTX[wb.chord]||"Su función depende del contexto."}</span>`;
+  host.innerHTML=
+    `<div class="why-grid">
+       <div class="why-sec"><div class="wb-cap2">Cómo se construye — apilando intervalos</div><div class="why-stack">${stack}</div><div class="why-formula">${formula}</div></div>
+       <div class="why-sec"><div class="wb-cap2">En palabras</div><div class="why-txt">${WHY_WORDS[wb.chord]||""}</div>
+         <div class="wb-cap2" style="margin-top:13px">Para qué sirve — su función</div><div class="why-fxrow">${fx}</div></div>
+     </div>
+     <div class="why-theory">${WHY_THEORY[WHY_FAMILY[wb.chord]]}</div>`;
+}
+/* --- datos de escalas para el porqué --- */
+const WHY_SC_WORDS={
+  major:"Escala mayor: el sonido alegre y estable, base de casi toda la música occidental.",
+  natmin:"Menor natural (eólico): el sonido menor 'triste'. Tres notas menores: ♭3, ♭6 y ♭7.",
+  harmin:"Menor armónica: la menor natural con la 7ª subida (♮7). Ese medio tono hacia la tónica da el color dramático 'clásico/español', con un salto de 1½ tono entre ♭6 y 7.",
+  melmin:"Menor melódica: menor con 6ª y 7ª mayores. Suena a menor pero 'suave'; muy usada en jazz.",
+  dorian:"Dórico: menor con la 6ª MAYOR (♮6). Un menor 'brillante y jazzero', menos triste que el natural.",
+  phryg:"Frigio: menor con la 2ª menor (♭2). Oscuro y tenso; sabor español/flamenco.",
+  lydian:"Lidio: mayor con la 4ª aumentada (♯4). Soñador, flotante, luminoso.",
+  mixo:"Mixolidio: mayor con la 7ª menor (♭7). Mayor 'bluesero/rockero'; la escala de los acordes dominantes.",
+  locr:"Locrio: el más inestable — ♭2 y ♭5. Su tónica es un acorde disminuido. Rara vez funciona como centro."
+};
+const WHY_SC_MODE={ major:null, dorian:[2,2], phryg:[3,4], lydian:[4,5], mixo:[5,7], natmin:[6,9], locr:[7,11] };  // [grado del modo, semitonos a la mayor madre]
+const WHY_SC_ORIGIN={
+  major:"Es la escala de referencia: los demás modos y alteraciones se describen en relación a ella.",
+  harmin:"No es un modo de la mayor: es la menor natural con la 7ª subida a propósito (para tener sensible).",
+  melmin:"No es un modo de la mayor: es la menor con la 6ª y la 7ª subidas al ascender."
+};
+const WHY_SC_THEORY="Una escala es una secuencia fija de tonos (T) y semitonos (S) que define un 'color'. Los <b>modos</b> usan las mismas notas que una escala mayor, pero empiezan en otro grado — por eso cambian de carácter sin cambiar una sola nota.";
+const WHY_STEP={1:"S",2:"T",3:"1½T"};
+function wbRenderWhyScale(host){
+  const sc=WB_SC[wb.scale], root=wbRootPc();
+  if(!sc || sc.length!==7){ host.style.display="none"; host.innerHTML=""; return; }
+  host.style.display="";
+  let steps="";
+  sc.forEach((iv,k)=>{ steps+=`<span class="why-n why-ns">${noteLabel((root+iv)%12)}</span>`;
+    const gap=((k<sc.length-1)?sc[k+1]:12)-iv;
+    steps+=`<span class="why-lnk"><span class="why-arw">→</span>${WHY_STEP[gap]||gap}</span>`; });
+  steps+=`<span class="why-n why-ns">${noteLabel(root%12)}</span>`;
+  const MAJ=[0,2,4,5,7,9,11]; let formula="";
+  sc.forEach((iv,i)=>{ const alt=iv-MAJ[i]; const deg=(alt<0?'♭':alt>0?'♯':'')+(i+1);
+    formula+=`<span class="why-deg${alt!==0?' why-alt':''}"><b>${deg}</b><span class="why-dn">${noteLabel((root+iv)%12)}</span></span>`; });
+  const md=WHY_SC_MODE[wb.scale]; let origin;
+  if(md){ const pk=((root-md[1])%12+12)%12;
+    origin=`<span class="why-fx"><span class="why-rn">Modo ${md[0]}</span><span class="why-fk">mismas notas que ${KEY_NAMES[pk]} mayor</span><span class="why-fr">empieza en su grado ${md[0]}</span></span>`;
+  } else origin=`<span class="why-fnote">${WHY_SC_ORIGIN[wb.scale]||""}</span>`;
+  host.innerHTML=
+    `<div class="why-grid">
+       <div class="why-sec"><div class="wb-cap2">Cómo se construye — tonos (T) y semitonos (S)</div><div class="why-stack why-steps">${steps}</div><div class="why-formula">${formula}</div></div>
+       <div class="why-sec"><div class="wb-cap2">En palabras</div><div class="why-txt">${WHY_SC_WORDS[wb.scale]||""}</div>
+         <div class="wb-cap2" style="margin-top:13px">De dónde sale</div><div class="why-fxrow">${origin}</div></div>
+     </div>
+     <div class="why-theory">${WHY_SC_THEORY}</div>`;
+}
+/* --- datos de intervalos para el porqué --- */
+const IV_QUAL={A:"aumentada",M:"mayor",m:"menor",P:"justa",d:"disminuida"};
+const IV_INVQ={A:"d",M:"m",m:"M",P:"P",d:"A"};
+const IV_ORD=["1ª","2ª","3ª","4ª","5ª","6ª","7ª","8ª"];
+const IV_INV1={P1:"unísono",A1:"unísono aum.",d1:"unísono dism."};
+const IV_THEORY="Un intervalo se nombra con dos cosas: un <b>número</b> (cuántas letras/grados abarca: 2ª, 3ª, 4ª…) y una <b>calidad</b> (justa, mayor, menor, aumentada o disminuida). Dos intervalos pueden sonar igual pero escribirse distinto — el número lo decide la grafía en el pentagrama, no el oído.";
+function ivConson(sh){
+  if(sh==="A4"||sh==="d5") return ["Disonante · tritono","La tensión máxima: parte la octava justo al medio (6 st) y 'pide' resolver."];
+  if(["P4","P5","P8"].includes(sh)) return sh==="P4"?["Consonante (contextual)","La 4ª justa es estable, aunque a veces 'pide' resolver."]:["Consonante perfecta","Suena estable y 'abierta/hueca'."];
+  if(["M3","m3","M6","m6"].includes(sh)) return ["Consonante imperfecta","Suena dulce y estable — la base de las tríadas."];
+  if(["m2","M2","m7","M7"].includes(sh)) return ["Disonante","Suena tensa; 'pide' resolver a una consonancia."];
+  return ["Disonante (alterada)","Intervalo aumentado o disminuido: tenso y cromático."];
+}
+function wbRenderWhyInterval(host){
+  host.style.display="";
+  const sh=wb.iv.sh, q=sh[0], num=wb.iv.size, semi=wb.iv.semi;
+  const rootN=fmtSp(spellNote(wb.letter,wb.acc)), tgtN=fmtSp(spellInterval(wb.letter,wb.acc,num,semi));
+  const invNum=9-num, invSh=IV_INVQ[q]+invNum, invSemi=12-semi;
+  const invName=WB_IVES[invSh]||IV_INV1[invSh]||invSh;
+  const [consT,consD]=ivConson(sh);
+  const twin=(sh==="A4"||sh==="d5")?` <b>Acá:</b> ${rootN}→${tgtN} es ${WB_IVES[sh]}, pero suena idéntico a su prima enarmónica (${sh==="A4"?"5ª dism.":"4ª aum."}).`:"";
+  host.innerHTML=
+    `<div class="why-grid">
+       <div class="why-sec"><div class="wb-cap2">Cómo se cuenta — número + calidad</div>
+         <div class="why-stack"><span class="why-n">${rootN}</span><span class="why-lnk"><span class="why-arw">→</span>${semi} st</span><span class="why-n">${tgtN}</span></div>
+         <div class="why-formula">
+           <span class="why-deg"><b>${IV_ORD[num-1]||num}</b><span class="why-dn">abarca ${num} grados</span></span>
+           <span class="why-deg"><b>${IV_QUAL[q]||q}</b><span class="why-dn">calidad</span></span>
+           <span class="why-deg"><b>${semi} st</b><span class="why-dn">distancia</span></span>
+         </div>
+       </div>
+       <div class="why-sec"><div class="wb-cap2">Carácter</div><div class="why-txt"><b>${consT}.</b> ${consD}</div>
+         <div class="wb-cap2" style="margin-top:13px">Al invertirla (la nota grave sube una 8ª)</div>
+         <div class="why-fxrow"><span class="why-fx"><span class="why-rn">${invName}</span><span class="why-fk">${tgtN} → ${rootN}</span><span class="why-fr">los números suman 9 · ${invSemi} st</span></span></div>
+       </div>
+     </div>
+     <div class="why-theory">${IV_THEORY}${twin}</div>`;
+}
+/* --- porqué de una nota: enarmónicos + alteración --- */
+function wbRenderWhyNote(host){
+  host.style.display="";
+  const noteN=fmtSp(spellNote(wb.letter,wb.acc)), natN=LETTERS[wb.letter], enh=wbEnharm(wb.letter,wb.acc);
+  const chips= enh.length
+    ? enh.map(e=>{ const rare=/##|bb|𝄫|𝄪/.test(e); return `<span class="why-deg${rare?'':' why-alt'}"><b>${e}</b>${rare?'<span class="why-dn">raro</span>':''}</span>`; }).join('')
+    : `<span class="why-fnote">Esta altura prácticamente sólo se llama ${noteN}.</span>`;
+  let alt;
+  if(wb.acc===0) alt=`<b>${noteN}</b> es una nota <b>natural</b> (sin alteración) — una tecla blanca del piano.`;
+  else if(wb.acc===1) alt=`El <b>sostenido (♯)</b> sube la nota natural <b>${natN}</b> medio tono (un semitono).`;
+  else if(wb.acc===-1) alt=`El <b>bemol (♭)</b> baja la nota natural <b>${natN}</b> medio tono (un semitono).`;
+  else if(wb.acc===2) alt=`El <b>doble sostenido (𝄪)</b> sube <b>${natN}</b> un tono entero. Es raro; aparece por reglas de grafía.`;
+  else alt=`El <b>doble bemol (𝄫)</b> baja <b>${natN}</b> un tono entero. Es raro; aparece por reglas de grafía.`;
+  host.innerHTML=
+    `<div class="why-grid">
+       <div class="why-sec"><div class="wb-cap2">Sus otros nombres — enarmónicos</div>
+         <div class="why-stack"><span class="why-n">${noteN}</span>${enh.length?`<span class="why-lnk"><span class="why-arw">=</span>igual altura</span>`:''}</div>
+         <div class="why-formula">${chips}</div></div>
+       <div class="why-sec"><div class="wb-cap2">La alteración</div><div class="why-txt">${alt}</div></div>
+     </div>
+     <div class="why-theory">La misma tecla del piano puede tener varios nombres (<b>enarmónicos</b>). Cuál se usa depende de la tonalidad: en una escala no se repite ninguna letra, así que a veces esa altura se escribe <b>F♯</b> y otras <b>G♭</b>.</div>`;
+}
+/* --- porqué del análisis funcional (números romanos) --- */
+const AN_THEORY="En una tonalidad, cada acorde cumple un <b>rol</b>: tónica (casa/reposo), subdominante (se aleja) o dominante (tensión que 'quiere' volver). Esa gravedad —tensión que resuelve— es lo que hace avanzar la música. La progresión madre: <b>ii–V–I</b>.";
+const AN_SUF={maj:["","maj7"],dom:["","7"],min:["m","m7"],dim:["°","°7"],hd:["°","m7♭5"],aug:["+","+7"]};
+const AN_MAJ={
+  I:{f:"Tónica",i:"🏠",t:"El reposo — 'casa'. No necesita resolver: es a donde todo vuelve.",c:"cierra las cadencias V–I (auténtica) y IV–I (plagal)."},
+  ii:{f:"Subdominante",i:"🚶",t:"Pre-dominante: el arranque del ii–V–I. Tira fuerte hacia la dominante (V).",c:"ii–V–I, la progresión madre."},
+  iii:{f:"Tónica (débil)",i:"🏠",t:"Función de tónica pero inestable; comparte notas con I y V. Suele ir a IV o a vi.",c:""},
+  IV:{f:"Subdominante",i:"🚶",t:"Se aleja de casa. Prepara la dominante (IV–V) o vuelve directo a la tónica (IV–I).",c:"IV–V–I, o IV–I (plagal, 'amén')."},
+  V:{f:"Dominante",i:"⚡",t:"La tensión máxima. Su sensible 'sube' a la tónica; con 7ª, el tritono empuja aún más. Resuelve a I.",c:"el final del ii–V–I y de la cadencia auténtica V–I."},
+  vi:{f:"Tónica (débil) · submediante",i:"🏠",t:"Sustituto de la tónica. Protagonista de la cadencia rota, cuando V va a vi en vez de a I.",c:"V–vi (cadencia rota)."},
+  "vii°":{f:"Dominante (sensible)",i:"⚡",t:"Función de dominante sin su raíz — muy inestable. Resuelve a I.",c:"vii°–I."}
+};
+const AN_MIN={
+  i:{f:"Tónica",i:"🏠",t:"El reposo — 'casa' menor. Es a donde resuelve la tensión.",c:"cierra la cadencia V–i."},
+  "ii°":{f:"Subdominante",i:"🚶",t:"Pre-dominante de la menor (disminuido). Tira hacia la dominante V.",c:"ii°–V–i."},
+  III:{f:"Tónica · relativo mayor",i:"🏠",t:"El relativo mayor dentro de la menor: un color luminoso.",c:""},
+  iv:{f:"Subdominante",i:"🚶",t:"Subdominante menor. Prepara la dominante; el iv–i tiene un color melancólico.",c:"iv–V–i."},
+  V:{f:"Dominante",i:"⚡",t:"La tensión que resuelve a i. En menor se sube la 7ª (sensible) para poder tenerla.",c:"V–i (cadencia auténtica)."},
+  VI:{f:"Submediante",i:"🏠",t:"Sustituto de tónica; base de la cadencia rota en menor.",c:"V–VI."},
+  "vii°":{f:"Dominante (sensible)",i:"⚡",t:"Disminuido sobre la sensible — resuelve a i.",c:"vii°–i."}
+};
+const AN_CHROM={
+  "ii°":"En mayor es un ii disminuido, prestado de la menor — pre-dominante con más tensión.",
+  "III":"Mediante mayor (cromático); muchas veces funciona como V/vi.",
+  "♭III":"Acorde prestado (mixtura modal) de la menor paralela. Color cromático.",
+  "♭iii":"Acorde prestado (mixtura modal). Cromático.",
+  VI:"Submediante mayor (prestada); color cálido, suele ir a ii o IV.",
+  "♭VI":"Acorde prestado muy usado para color dramático; suele ir a V o a IV.",
+  "♭vi":"Acorde prestado (mixtura modal). Cromático.",
+  "V+":"Dominante con la 5ª aumentada — suma tensión hacia I. Cromático.",
+  "N⁶":"Napolitana — acorde cromático de función SUBDOMINANTE (sustituye al iv). Muy dramático; casi siempre va a V.",
+  "It⁶":"Sexta aumentada italiana — pre-dominante cromático; su tensión resuelve a V. Avanzado.",
+  "Fr⁶":"Sexta aumentada francesa — pre-dominante cromático que resuelve a V. Avanzado.",
+  "Gr⁶":"Sexta aumentada alemana — pre-dominante cromático (suena como dominante) que resuelve a V. Avanzado."
+};
+function anRole(fn,keyMode){
+  if(/\//.test(fn)){ const t=fn.split('/')[1];
+    return {f:"Dominante secundaria",i:"⚡",t:`Actúa como la dominante de ${t}: le presta su tensión para empujar hacia ${t}, tratándolo por un momento como si fuera la tónica. Resuelve a ${t}.`,c:`${fn} → ${t}`}; }
+  const dia=(keyMode==="minor"?AN_MIN:AN_MAJ)[fn]; if(dia) return dia;
+  if(AN_CHROM[fn]) return {f:"Cromático / avanzado",i:"🎨",t:AN_CHROM[fn],c:""};
+  return {f:"Avanzado",i:"🎨",t:"Acorde cromático o de color — su función depende del contexto.",c:""};
+}
+function wbRenderWhyAnalysis(host){
+  host.style.display="";
+  const ac=wbAnalysisChord(), fn=wb.fn;
+  const notes=ac.tones.map(t=>fmtSp(t)).join(" ");
+  const def=(wb.keyMode==="minor"?FN_MIN:FN_MAJ)[fn];
+  const chordName= (ac.special||!def) ? "" : fmtSp(ac.tones[0])+AN_SUF[def.q][wb.seventh?1:0];
+  const kn=fmtSp(spellNote(wb.letter,wb.acc))+" "+(wb.keyMode==="minor"?"menor":"mayor");
+  const r=anRole(fn,wb.keyMode), rn=fn+(ac.figure||"");
+  host.innerHTML=
+    `<div class="why-grid">
+       <div class="why-sec"><div class="wb-cap2">El número romano, en concreto</div>
+         <div class="why-stack"><span class="why-n why-wide">${rn}</span><span class="why-lnk"><span class="why-arw">=</span>en ${kn}</span>${chordName?`<span class="why-n why-wide">${chordName}</span>`:''}</div>
+         <div class="why-formula"><span class="why-deg"><b>Notas</b><span class="why-dn">${notes}</span></span></div></div>
+       <div class="why-sec"><div class="wb-cap2">Su función — qué hace en la tonalidad</div>
+         <div class="why-txt"><b>${r.i} ${r.f}.</b> ${r.t}</div>
+         ${r.c?`<div class="wb-cap2" style="margin-top:12px">Cadencia típica</div><div class="why-txt">${r.c}</div>`:''}</div>
+     </div>
+     <div class="why-theory">${AN_THEORY}</div>`;
+}
+
 function wbApply(){
   const _ind=$("wbInputInd"); if(_ind) _ind.style.display="none";
   const rootPc=wbRootPc(); let root=rootPc, active=[0], eng="chord", _ac=null; WB_FORCE=null; WB_GHOST=null;
@@ -2187,6 +1927,12 @@ function wbApply(){
     WB_FORCE={}; _ac.tones.forEach(t=>WB_FORCE[t.pc]={letter:t.letter,acc:t.acc}); }
   WB_SIG = (wb.mode==="escala") ? null : (wb.mode==="analisis") ? wbAnalysisSig() : 0;   // armadura: escala=auto, análisis=tonalidad, resto=sin armadura
   state.root=root; state.active=new Set(active); state.mode=eng;
+  if(wb.mode==="acorde"){ WB_FORCE={};   // grafía anclada a la raíz elegida (corrige E♭→D#, A♭→G#, etc.)
+    active.forEach(iv=>{ const deg=staffDeg(iv), letter=LETTERS[((wb.letter+deg)%7+7)%7], pc=(rootPc+iv)%12;
+      let acc=((pc-NAT_PC[letter])%12+12)%12; if(acc>6)acc-=12; WB_FORCE[pc]={letter,acc}; }); }
+  else if(wb.mode==="escala"){ const _sc=WB_SC[wb.scale];   // escala de 7 notas: una letra por grado, anclada a la raíz elegida
+    if(_sc && _sc.length===7){ WB_FORCE={}; _sc.forEach((iv,i)=>{ const letter=LETTERS[((wb.letter+i)%7+7)%7], pc=(rootPc+iv)%12;
+      let acc=((pc-NAT_PC[letter])%12+12)%12; if(acc>6)acc-=12; WB_FORCE[pc]={letter,acc}; }); } }
   state.preset=null; state.invMode=false; state.voicingStep=-1;
   if(wb.mode!=="acorde" && wb.mode!=="escala") state.caged=null;   // CAGED solo en acorde/escala
   const cc=document.querySelector(".caged-ctrl"); if(cc) cc.style.display=(wb.mode==="acorde"||wb.mode==="escala")?"":"none";
@@ -2208,7 +1954,7 @@ function wbApply(){
     sub.textContent=kn+": "+_ac.tones.map(t=>fmtSp(t)).join(" "); }
   const rcap=$("wbResCap"); if(rcap) rcap.textContent={nota:"Nota",intervalo:"Notas del intervalo",escala:"Notas de la escala",acorde:"Notas del acorde",analisis:"Notas del acorde"}[wb.mode]||"Notas";
   $("wbKey").textContent = fmtSp(spellNote(wb.letter,wb.acc))+" "+(wb.keyMode==="minor"?"menor":"mayor");
-  wbRenderControls(); wbRenderRoot(); wbRenderCircle();
+  wbRenderControls(); wbRenderRoot(); wbRenderCircle(); wbRenderWhy();
 }
 function wbRenderRoot(){
   const box=$("wbRoot"); if(!box) return; box.innerHTML=""; const dis=false;   // en Análisis la raíz = tónica de la tonalidad
@@ -2239,21 +1985,22 @@ function wbRenderCircle(){
   for(let i=0;i<12;i++){
     const c=i*30,a0=c-15,a1=c+15, mj=CIRCLE[i].maj, mn=CIRCLE[i].min;
     const majOn=wb.keyMode==="major"&&wb.letter===mj[0]&&wb.acc===mj[1], minOn=wb.keyMode==="minor"&&wb.letter===mn[0]&&wb.acc===mn[1];
-    const majFill=majOn?cAcc:(arc.has(i)?tintMaj:cMaj), minFill=minOn?cAcc:cMin;
+    const isDom=homeIdx>=0&&i===(homeIdx+1)%12, isSub=homeIdx>=0&&i===(homeIdx+11)%12;   // vecino horario=quinta(V), antihorario=cuarta(IV)
+    const majFill=majOn?cAcc:(isDom?"rgba(0,112,255,.22)":(isSub?"rgba(232,138,0,.24)":cMaj)), minFill=minOn?cAcc:cMin;
     g+=`<path class="seg" data-i="${i}" data-m="maj" d="${sec(RM,RO,a0,a1)}" fill="${majFill}" stroke="${cMajS}" stroke-width="1"/>`;
     g+=`<path class="seg" data-i="${i}" data-m="min" d="${sec(RII,RM,a0,a1)}" fill="${minFill}" stroke="${cMinS}" stroke-width="1"/>`;
     const [mx,my]=pol(85,c),[nx,ny]=pol(52,c);
     g+=`<text x="${mx}" y="${my}" text-anchor="middle" dominant-baseline="central" font-size="12.5" font-weight="600" fill="${majOn?'#fff':cText}">${nm(mj)}</text>`;
     g+=`<text x="${nx}" y="${ny}" text-anchor="middle" dominant-baseline="central" font-size="9.5" fill="${minOn?'#fff':cTextMin}">${nm(mn)}m</text>`;
   }
-  // recuadro único que encierra el vecindario (mayores externos + relativas menores internas)
-  if(homeIdx>=0){ const ca=homeIdx*30; g+=`<path d="${sec(RII,RO,ca-45,ca+45)}" fill="none" stroke="${cArc}" stroke-width="2" stroke-linejoin="round" pointer-events="none"/>`; }
+  // recuadro sutil que agrupa el vecindario (tonos cercanos: mayores externos + relativas menores)
+  if(homeIdx>=0){ const ca=homeIdx*30; g+=`<path d="${sec(RII,RO,ca-45,ca+45)}" fill="none" stroke="${cFaint}" stroke-width="1.5" stroke-dasharray="3 3" stroke-linejoin="round" pointer-events="none"/>`; }
   g+=`<circle cx="${CC}" cy="${CC}" r="${RII-3}" fill="${cCenter}" stroke="${cCenterS}"/>`;
   g+=`<text x="${CC}" y="${CC-3}" text-anchor="middle" font-size="14" font-weight="600" fill="${cAcc}" font-family="system-ui,sans-serif">${fmtSp(spellNote(wb.letter,wb.acc))}</text>`;
   g+=`<text x="${CC}" y="${CC+11}" text-anchor="middle" font-size="7.5" fill="${cFaint}" font-family="Space Mono,monospace">${wb.keyMode==="minor"?"MENOR":"MAYOR"}</text>`;
   host.innerHTML=`<svg viewBox="0 0 224 224">${g}</svg>`;
   host.querySelectorAll(".seg").forEach(p=>p.onclick=()=>{ const i=+p.dataset.i, k=p.dataset.m==="maj"?CIRCLE[i].maj:CIRCLE[i].min;
-    wb.letter=k[0]; wb.acc=k[1]; wb.keyMode=p.dataset.m==="maj"?"major":"minor"; $("wbTonPop").classList.remove("open"); wbApply(); });
+    wb.letter=k[0]; wb.acc=k[1]; wb.keyMode=p.dataset.m==="maj"?"major":"minor"; wbApply(); });
 }
 function wbGrid(items,sel,attr,cols,tip){
   let h=`<div class="wb-grid wb-cols-${cols}">`;
@@ -2298,8 +2045,7 @@ $("wbModes").querySelectorAll("button").forEach(b=>b.onclick=()=>{
 $("wbTheme").onclick=()=>{ const dark=document.documentElement.getAttribute("data-theme")==="dark";
   applyTheme(dark?"light":"dark",true); $("wbTheme").textContent="Tema: "+(dark?"claro":"oscuro"); renderAll(); };
 $("wbPlay").onclick=()=>wbPlay(false); $("wbArp").onclick=()=>wbPlay(true);
-$("wbTonPill").onclick=(e)=>{ if(e.target.closest("#wbTonPop")) return; const p=$("wbTonPop"); p.classList.toggle("open"); if(p.classList.contains("open")) wbRenderCircle(); };
-document.addEventListener("click",(e)=>{ if(!e.target.closest("#wbTonPill")){ const p=$("wbTonPop"); if(p) p.classList.remove("open"); } });
+// panel lateral "Mapa de tonalidades" (Opción B): siempre visible (sin plegar/desplegar).
 (function(){ const dark=document.documentElement.getAttribute("data-theme")==="dark"; $("wbTheme").textContent="Tema: "+(dark?"oscuro":"claro"); })();
 // reubicar surfaces existentes dentro del workbench y arrancar
 $("wbStaffSlot").appendChild($("staff"));
@@ -2307,22 +2053,18 @@ $("wbPianoSlot").appendChild(document.querySelector(".duo-piano"));
 $("wbFretSlot").appendChild($("fbHost"));
 (function(){ const cc=document.querySelector(".caged-ctrl"); if(cc) $("wbFretSlot").parentElement.insertBefore(cc, $("wbFretSlot")); })();   // CAGED en la card del mástil
 // identificación por clic en el piano: eliminada (se repensará). El piano sólo suena.
-// "volver" sigue disponible para la entrada por MIDI hardware (onMidi → applyHeld).
 $("wbInputExit").onclick=wbApply;
-// re-home Práctica: mover metrónomo/afinador/ear/progresión al drawer
-["metroBeats","tunerStrings","etMode","progList"].forEach(id=>{ const el=document.getElementById(id); if(el){ const card=el.closest(".card"); if(card) $("wbDrawerBody").appendChild(card); } });
+// re-home Práctica: mover metrónomo + progresión al drawer
+["metroBeats","progList"].forEach(id=>{ const el=document.getElementById(id); if(el){ const card=el.closest(".card"); if(card) $("wbDrawerBody").appendChild(card); } });
 function wbOpenPractica(){ $("wbDrawer").classList.add("open"); $("wbBackdrop").classList.add("open"); }
 function wbClosePractica(){ $("wbDrawer").classList.remove("open"); $("wbBackdrop").classList.remove("open"); }
 $("wbDrawerX").onclick=wbClosePractica; $("wbBackdrop").onclick=wbClosePractica; $("wbPracFab").onclick=wbOpenPractica;
-// MIDI: drawer/backdrop al body; el fab al contenedor de fabs (junto a Práctica, arriba a la derecha)
-["midiDrawer","midiBackdrop"].forEach(id=>{ const el=document.getElementById(id); if(el) document.body.appendChild(el); });
-(function(){ const mf=$("midiFab"); if(mf) $("wbFabs").appendChild(mf); })();
-// menú hamburguesa: muestra/oculta los chips (Tema · Práctica · MIDI)
+// menú hamburguesa: muestra/oculta los chips (Tema · Práctica)
 (function(){ const mb=$("wbMenuBtn"), fb=$("wbFabs"); if(!mb||!fb) return;
   const close=()=>{ fb.classList.remove("open"); mb.classList.remove("open"); };
   mb.onclick=(e)=>{ e.stopPropagation(); const o=fb.classList.toggle("open"); mb.classList.toggle("open",o); };
   document.addEventListener("click",(e)=>{ if(!fb.contains(e.target)&&!mb.contains(e.target)) close(); });
-  fb.addEventListener("click",(e)=>{ if(e.target.closest("#wbPracFab,.midi-fab")) close(); });   // Práctica/MIDI abren cajón → cerrar menú
+  fb.addEventListener("click",(e)=>{ if(e.target.closest("#wbPracFab")) close(); });   // Práctica abre cajón → cerrar menú
 })();
 // foco de instrumento (en mobile prioriza uno)
 $("wbFocus").querySelectorAll("button").forEach(b=>b.onclick=()=>{ const fi=b.dataset.fi;
