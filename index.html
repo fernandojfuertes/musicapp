@@ -9,28 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* ===== TEMA CLARO — estilo Tenuto / musictheory.net (tarjeta blanca) ===== */
-    --bg:#f0f0f0; --bg2:#eaeaea;
-    --panel-a:#fcfcfc; --panel-b:#ececec;
-    --ink:#000000; --muted:#404040; --faint:#707070;
-    --amber:#0070ff; --amber-2:#3f4a62; --amber-deep:#0059cc;
-    --accent-ink:#0070ff;
-    --teal:#2aa39a; --rust:#c2632f;
-    --line:#e6e6e6; --line-2:#dedede;
-    --board-a:#d8b886; --board-b:#c19a63; --brass:#9a7b42; --pearl:#5a4a2e;
-    --board-ink:#4a3a1e; --board-nut:#9a7b42;
-    --text:#000000;
-    --inset:#f4f4f4; --chip-a:#fcfcfc; --chip-b:#ececec;
-    --key-w-a:#ffffff; --key-w-b:#f1f1f1; --key-b-a:#4a4a4a; --key-b-b:#2a2a2a; --key-line:#d0d0d0; --piano-bg:#f4f4f4;
-    --lcd-a:#15231d; --lcd-b:#0c1410; --lcd-ink:#f4c861; --lcd-cap:#5c6a4f;
-    --staff-a:#ffffff; --staff-b:#f4f4f4; --led-off:#cfcfcf;
-    --svg-clef:#000000; --svg-sig:#0070ff; --svg-acc:#000000; --svg-line:#9a9a9a;
-    --cof-maj:#f4f4f4; --cof-maj-s:#e2e2e2; --cof-min:#fcfcfc; --cof-min-s:#ececec;
-    --cof-text:#000000; --cof-text-min:#404040; --cof-center:#fcfcfc; --cof-center-s:#e2e2e2; --cof-faint:#707070;
-    --sel-a:#3f4a62; --sel-b:#202b43; --sel-bd:#1b2335; --sel-tx:#ffffff;
-  }
-  html[data-theme="dark"]{
-    /* ===== TEMA OSCURO — gris neutro + acento azul (variante musictheory dark) ===== */
+    /* ===== TEMA OSCURO (único) — gris neutro + acento azul ===== */
     --bg:#252525; --bg2:#1e1e1e;
     --panel-a:#2e2e2e; --panel-b:#262626;
     --ink:#f2f2f2; --muted:#b0b0b0; --faint:#808080;
@@ -152,7 +131,7 @@
 
   /* piano */
   .piano-wrap{overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
-  .piano{position:relative;height:188px;display:flex;min-width:720px;background:var(--piano-bg);border-radius:8px;padding:6px 6px 0;}
+  .piano{position:relative;height:236px;display:flex;min-width:720px;background:var(--piano-bg);border-radius:8px;padding:6px 6px 0;}
   .wkey{position:relative;flex:1;min-width:0;margin:0 1px;background:linear-gradient(180deg,var(--key-w-a),var(--key-w-b));
     border:1px solid var(--key-line);border-top:none;border-radius:0 0 6px 6px;cursor:pointer;
     display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:11px;
@@ -222,10 +201,10 @@
   .fb-zlab i{font-style:normal;font-size:8px;opacity:.85;}
   .fbv-zone{grid-column:2 / 8;border:2px solid;border-radius:8px;z-index:0;pointer-events:none;position:relative;}
   /* liviano: en claro los atenuados necesitan más cuerpo para leerse sobre blanco */
-  html:not([data-theme="dark"]) .dot.dim{opacity:.32;}
-  html:not([data-theme="dark"]) .dot.ghost{opacity:.6;}
   .dot.pulse{transform:scale(1.32);box-shadow:0 0 16px 5px rgba(0,112,255,.85);border-color:#fff;z-index:6;}
-  .key.pulse{filter:brightness(1.5)!important;box-shadow:0 0 16px 4px rgba(0,112,255,.7);z-index:5;}
+  .key.pulse{filter:brightness(1.5)!important;box-shadow:0 0 16px 4px rgba(0,112,255,.7);}
+  .wkey.pulse{z-index:2;}   /* blanca al sonar: sobre otras blancas, pero DEBAJO de las negras */
+  .bkey.pulse{z-index:5;}   /* negra al sonar: por encima de todo */
   #staff .pulse{filter:drop-shadow(0 0 6px #f4c861);}
   .dot.bass{outline:3px solid var(--accent-ink);outline-offset:1px;box-shadow:0 0 11px 2px rgba(0,112,255,.55);}
   .key.bass{box-shadow:inset 0 0 0 3px var(--accent-ink),inset 0 -7px 11px -7px rgba(0,0,0,.28);}
@@ -326,13 +305,6 @@
   .midi-fab:hover{border-color:var(--amber-deep);color:var(--accent-ink);}
   .midi-fab .led{width:9px;height:9px;border-radius:50%;background:var(--led-off);flex:none;}
   .midi-fab .led.live{background:var(--teal);box-shadow:0 0 9px var(--teal);animation:pulse 1.6s ease-in-out infinite;}
-  .theme-fab{position:fixed;top:18px;left:18px;z-index:50;display:flex;align-items:center;gap:8px;cursor:pointer;
-    background:linear-gradient(168deg,var(--panel-a),var(--panel-b));border:1px solid var(--line);border-radius:12px;
-    padding:9px 13px;box-shadow:0 12px 30px -12px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.18);
-    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;transition:.15s;}
-  .theme-fab:hover{border-color:var(--amber-deep);color:var(--accent-ink);}
-  .theme-fab span:first-child{font-size:14px;line-height:1;}
-  @media(max-width:640px){ .theme-fab{top:12px;left:12px;padding:8px 11px;} .theme-fab #themeTxt{display:none;} }
   .backdrop{position:fixed;inset:0;background:rgba(8,6,3,.55);z-index:55;opacity:0;pointer-events:none;transition:opacity .22s;}
   .backdrop.open{opacity:1;pointer-events:auto;}
   .drawer{position:fixed;top:0;right:0;height:100vh;width:340px;max-width:88vw;z-index:60;overflow-y:auto;padding:22px;
@@ -478,7 +450,7 @@
   .wb-rail-hint{font-size:11px;color:var(--faint);line-height:1.45;margin:4px 2px 0;text-align:center;}
   .wb-rail-hint b{color:var(--muted);font-weight:600;}
   #wbTonPill{cursor:default;} #wbTonPill:hover .v{text-decoration:none;}
-  @media(max-width:900px){ #workbench{grid-template-columns:1fr;} .wb-rail{grid-column:1;width:100%;} .wb-rail #wbCofSlot svg{max-width:260px;} }
+  @media(max-width:900px){ #workbench{grid-template-columns:1fr;} .wb-main-col{grid-row:auto;} .wb-rail{grid-column:1;grid-row:auto;width:100%;} #workbench > .wb-inst{grid-column:1;} .wb-rail #wbCofSlot svg{max-width:260px;} }
   /* ---- resultado enriquecido "el porqué" (Fase 5) ---- */
   .wb-why{grid-column:1 / -1;background:var(--panel-a);border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin-bottom:11px;}
   .wb-why .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
@@ -524,7 +496,7 @@
   .wb-inst{background:var(--panel-a);border:1px solid var(--line);border-radius:9px;padding:13px 14px;margin-bottom:11px;}
   .wb-inst .wb-cap{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:10px;}
   /* el piano de dos manos debe llenar el ancho de la tarjeta (las manos crecen) */
-  #wbPianoSlot .duo-piano{max-width:700px;width:100%;margin:0 auto;}
+  #wbPianoSlot .duo-piano{max-width:960px;width:100%;margin:0 auto;}
   #wbPianoSlot .hand{flex:1 1 0;min-width:0;}
   .wb-controls{background:var(--panel-a);border:1px solid var(--line);border-radius:9px;padding:14px;min-height:104px;min-width:0;}
   .wb-cap2{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:10px;}
@@ -583,7 +555,6 @@
     <div class="wb-menu-wrap">
       <button class="wb-menu-btn" id="wbMenuBtn" aria-label="Menú"><span></span><span></span><span></span></button>
       <div class="wb-fabs" id="wbFabs">
-        <button class="wb-fab" id="wbTheme">Tema: claro</button>
         <button class="wb-fab" id="wbPracFab"><span class="ic">🛠</span> Práctica</button>
       </div>
     </div>
@@ -730,9 +701,6 @@
 
   </div>
 
-  <button class="theme-fab" id="themeFab" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema">
-    <span id="themeIcon">☀</span><span id="themeTxt">Claro</span>
-  </button>
 </div>
 
 <script>
@@ -1533,20 +1501,6 @@ $("metroTap").onclick=metroTap;
 $("metroToggle").onclick=()=>{ metro.on?metroStop():metroStart(); };
 metroRenderBeats();
 
-/* ===================== tema claro/oscuro ===================== */
-function applyTheme(theme,save){
-  const dark = theme==="dark";
-  if(dark) document.documentElement.setAttribute("data-theme","dark");
-  else document.documentElement.removeAttribute("data-theme");
-  const ic=document.getElementById("themeIcon"), tx=document.getElementById("themeTxt");
-  if(ic) ic.textContent = dark ? "☾" : "☀";
-  if(tx) tx.textContent = dark ? "Oscuro" : "Claro";
-  if(save){ try{ localStorage.setItem("mb-theme",dark?"dark":"light"); }catch(e){} }
-}
-(function initTheme(){
-  let saved=null; try{ saved=localStorage.getItem("mb-theme"); }catch(e){}
-  applyTheme(saved==="light"?"light":"dark",false);   // default oscuro
-})();
 
 applyTuning();
 renderAll();
@@ -2042,11 +1996,8 @@ function wbRenderControls(){
 }
 $("wbModes").querySelectorAll("button").forEach(b=>b.onclick=()=>{
   wb.mode=b.dataset.m; $("wbModes").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); wbApply(); });
-$("wbTheme").onclick=()=>{ const dark=document.documentElement.getAttribute("data-theme")==="dark";
-  applyTheme(dark?"light":"dark",true); $("wbTheme").textContent="Tema: "+(dark?"claro":"oscuro"); renderAll(); };
 $("wbPlay").onclick=()=>wbPlay(false); $("wbArp").onclick=()=>wbPlay(true);
 // panel lateral "Mapa de tonalidades" (Opción B): siempre visible (sin plegar/desplegar).
-(function(){ const dark=document.documentElement.getAttribute("data-theme")==="dark"; $("wbTheme").textContent="Tema: "+(dark?"oscuro":"claro"); })();
 // reubicar surfaces existentes dentro del workbench y arrancar
 $("wbStaffSlot").appendChild($("staff"));
 $("wbPianoSlot").appendChild(document.querySelector(".duo-piano"));
